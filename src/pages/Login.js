@@ -12,6 +12,23 @@ function Login() {
     }
   };
 
+  function validateBtn() {
+    const MIN_LENGTH = 6;
+    let validation = true;
+    if (email.includes('@') && email.includes('.com') && password.length > MIN_LENGTH) {
+      validation = false;
+    }
+    return validation;
+  }
+
+  function saveUserEmail() {
+    localStorage.setItem('mealsToken', '1');
+    localStorage.setItem('cocktailsToken', '1');
+    localStorage.setItem('user', JSON.stringify({
+      email,
+    }));
+  }
+
   return (
     <form>
       <label htmlFor="email">
@@ -37,8 +54,8 @@ function Login() {
       <button
         data-testid="login-submit-btn"
         type="button"
-        // disabled={}
-        // onClick={}
+        disabled={ () => validateBtn() }
+        onClick={ saveUserEmail }
       >
         Enter
       </button>

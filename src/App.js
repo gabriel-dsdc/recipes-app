@@ -1,6 +1,6 @@
 import React from 'react';
 import Provider from './context/MyProvider';
-import Login from './components/Login';
+import Login from './pages/Login';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
