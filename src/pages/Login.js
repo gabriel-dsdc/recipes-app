@@ -54,7 +54,7 @@ function Login() {
       <button
         data-testid="login-submit-btn"
         type="button"
-        disabled={ validateBtn() }
+        disabled={ () => validateBtn() }
         onClick={ saveUserEmail }
       >
         Enter
