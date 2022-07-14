@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function Login() {
   const [email, setUserEmail] = useState('');
   const [password, setUserPassword] = useState('');
+  const history = useHistory();
 
   const handleChange = ({ target }) => {
     if (target.name === 'email') {
@@ -27,6 +29,8 @@ function Login() {
     localStorage.setItem('user', JSON.stringify({
       email,
     }));
+
+    history.push('/foods');
   }
 
   return (
@@ -54,7 +58,7 @@ function Login() {
       <button
         data-testid="login-submit-btn"
         type="button"
-        disabled={ () => validateBtn() }
+        disabled={ validateBtn() }
         onClick={ saveUserEmail }
       >
         Enter
