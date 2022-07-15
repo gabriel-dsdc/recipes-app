@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 
 function Header({ title, hasSearch }) {
-  const history = useHistory();
   const [barVisible, setBarVisible] = useState(false);
 
   function openBar() {
@@ -14,13 +13,13 @@ function Header({ title, hasSearch }) {
 
   return (
     <>
-      <button type="button" onClick={ () => history.push('/profile') }>
+      <Link to="/profile">
         <img
           src={ profileIcon }
           data-testid="profile-top-btn"
           alt="Profile icon"
         />
-      </button>
+      </Link>
       {
         hasSearch
         && (
