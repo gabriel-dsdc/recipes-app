@@ -42,7 +42,7 @@ function Header({ title, hasSearch }) {
 }
 
 Header.defaultProps = {
-  hasSearch: true,
+  hasSearch: false,
 };
 
 Header.propTypes = {
