@@ -3,9 +3,14 @@ import propTypes from 'prop-types';
 import MyContext from './MyContext';
 
 function Provider({ children }) {
-  const [estadoTeste, setEstadoTeste] = useState('');
+  const INITIAL_SEARCH = {
+    searchText: '',
+    searchType: '',
+  };
+
+  const [search, setSearch] = useState(INITIAL_SEARCH);
   return (
-    <MyContext.Provider value={ { estadoTeste, setEstadoTeste } }>
+    <MyContext.Provider value={ { search, setSearch } }>
       {children}
     </MyContext.Provider>
   );

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
+import MyContext from '../context/MyContext';
 
 function Header({ title, hasSearch }) {
+  const { setSearch } = useContext(MyContext);
   const [barVisible, setBarVisible] = useState(false);
 
   function openBar() {
@@ -20,6 +23,7 @@ function Header({ title, hasSearch }) {
           alt="Profile icon"
         />
       </Link>
+      <h1 data-testid="page-title">{title}</h1>
       {
         hasSearch
         && (
@@ -34,9 +38,16 @@ function Header({ title, hasSearch }) {
       }
       {
         barVisible
-        && <input data-testid="search-input" type="text" />
+        && <input
+          data-testid="search-input"
+          type="text"
+          onChange={ ({ target: { value } }) => setSearch((prevState) => ({
+            ...prevState,
+            searchText: value,
+          })) }
+        />
       }
-      <h1 data-testid="page-title">{title}</h1>
+      <SearchBar />
     </>
   );
 }
