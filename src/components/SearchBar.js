@@ -4,44 +4,19 @@ import MyContext from '../context/MyContext';
 import getRecipes from '../services/api';
 
 function SearchBar() {
-  const { search: { searchText, searchType }, setSearch } = useContext(MyContext);
+  const { search, setSearch } = useContext(MyContext);
   const history = useHistory();
   const pathname = history.location.pathname.split('/')[1];
 
   async function handleSearch(database) {
-    switch (searchType) {
-    case 'ingredient': {
-      const api = await getRecipes(database, `filter.php?i=${searchText}`);
-      const allRecipes = api[Object.keys(api)];
-      if (allRecipes.length === 1) {
-        const recipeId = allRecipes[0][Object.keys(allRecipes[0])[0]];
-        history.push(`/${pathname}/${recipeId}`);
-      }
-      break;
-    }
-    case 'name': {
-      const api = await getRecipes(database, `search.php?s=${searchText}`);
-      const allRecipes = api[Object.keys(api)];
-      if (allRecipes.length === 1) {
-        const recipeId = allRecipes[0][Object.keys(allRecipes[0])[0]];
-        history.push(`/${pathname}/${recipeId}`);
-      }
-      break;
-    }
-    default:
-      if (searchType === 'first-letter') {
-        if (searchText.length > 1) {
-          global.alert('Your search must have only 1 (one) character');
-        } else {
-          const api = await getRecipes(database, `search.php?f=${searchText}`);
-          const allRecipes = api[Object.keys(api)];
-          if (allRecipes.length === 1) {
-            const recipeId = allRecipes[0][Object.keys(allRecipes[0])[0]];
-            history.push(`/${pathname}/${recipeId}`);
-          }
-        }
-      }
-      break;
+    const allRecipes = await getRecipes(database, search.searchType, search.searchText);
+    setSearch({
+      ...search,
+      searchResult: allRecipes,
+    });
+    if (allRecipes.length === 1) {
+      const recipeId = allRecipes[0][Object.keys(allRecipes[0])[0]];
+      history.push(`/${pathname}/${recipeId}`);
     }
   }
 
