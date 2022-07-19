@@ -14,6 +14,9 @@ function SearchBar() {
       ...search,
       searchResult: allRecipes,
     });
+    if (!allRecipes[0]) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
     if (allRecipes.length === 1) {
       const recipeId = allRecipes[0][Object.keys(allRecipes[0])[0]];
       history.push(`/${pathname}/${recipeId}`);
@@ -34,6 +37,7 @@ function SearchBar() {
           name="search"
           value="ingredient"
           type="radio"
+          required
         />
         Ingredient
       </label>
