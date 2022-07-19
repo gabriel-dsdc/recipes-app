@@ -6,6 +6,7 @@ function Provider({ children }) {
   const INITIAL_SEARCH = {
     searchText: '',
     searchType: '',
+    searchResult: [],
   };
 
   const [search, setSearch] = useState(INITIAL_SEARCH);
