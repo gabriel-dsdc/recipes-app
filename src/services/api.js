@@ -1,5 +1,6 @@
-async function getRecipes(database, searchType, searchText) {
+export async function getRecipes(database, searchType, searchText) {
   let url;
+  console.log('chamei a primeira');
   switch (searchType) {
   case 'ingredient':
     url = `https://www.the${database}db.com/api/json/v1/1/filter.php?i=${searchText}`;
@@ -22,4 +23,11 @@ async function getRecipes(database, searchType, searchText) {
   return api[Object.keys(api)] || [];
 }
 
-export default getRecipes;
+export async function getDefaultRecipes(database) {
+  const url = `https://www.the${database}db.com/api/json/v1/1/search.php?s=`;
+  console.log('chamei a segunda');
+  const api = await fetch(url)
+    .then((res) => (res.json()))
+    .then((res) => (res));
+  return api[Object.keys(api)] || [];
+}
