@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import MyContext from '../context/MyContext';
-import getRecipes from '../services/api';
+import { getRecipes } from '../services/api';
 
 function SearchBar() {
   const { search, setSearch } = useContext(MyContext);
