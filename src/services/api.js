@@ -37,11 +37,17 @@ export async function getDefaultResponse(type) {
   return api[Object.keys(api)];
 }
 
-// export async function getDefaultRecipes(database) {
-//   const url = `https://www.the${database}db.com/api/json/v1/1/search.php?s=`;
-//   console.log('chamei a segunda');
-//   const api = await fetch(url)
-//     .then((res) => (res.json()))
-//     .then((res) => (res));
-//   return api[Object.keys(api)] || [];
-// }
+export async function fetchRecipeWithID(type, id) {
+  let url;
+  if (type === 'foods') {
+    url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+  }
+  if (type === 'drinks') {
+    url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+  }
+  const api = await fetch(url)
+    .then((res) => (res.json()))
+    .then((res) => (res));
+  // return api;
+  return api[Object.keys(api)];
+}
