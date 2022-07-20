@@ -11,11 +11,13 @@ function Provider({ children }) {
     searchType: '',
     searchResult: [],
   };
-  const [cocktail, setCocktail] = useState([]);
-  const [meal, setMeal] = useState([]);
   const [search, setSearch] = useState(INITIAL_SEARCH);
   const [defaultFood, setdefaultFood] = useState([]);
   const [defaultDrinks, setDefaultDrinks] = useState([]);
+  const [cocktail, setCocktail] = useState([]);
+  const [meal, setMeal] = useState([]);
+  const [categoryMeal, setCategoryMeal] = useState([]);
+  const [categoryDrink, setCategoryDrink] = useState([]);
 
   useEffect(() => {
     async function fetchDefault() {
@@ -37,6 +39,10 @@ function Provider({ children }) {
         setCocktail,
         defaultFood,
         defaultDrinks,
+        categoryMeal,
+        setCategoryMeal,
+        categoryDrink,
+        setCategoryDrink,
       } }
     >
       {children}
