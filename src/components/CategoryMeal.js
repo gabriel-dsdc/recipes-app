@@ -6,20 +6,20 @@ function CategoryMeal() {
 
   async function getMealApi() {
     return fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
-      .then((res) => res.json());
+      .then((response) => response.json());
   }
 
   useEffect(() => {
-    getMealApi().then((data) => {
-      setMeal(data.meals);
-      console.log(data.meals);
+    getMealApi().then((response) => {
+      setMeal(response.meals);
+      console.log(response.meals);
     });
   }, []);
 
-  const MAX_CATEGORYS = 5;
+  const MAX_CATEGORY = 5;
   return (
     <div>
-      { meal.slice(0, MAX_CATEGORYS).map((meals, index) => (
+      { meal.slice(0, MAX_CATEGORY).map((meals, index) => (
         <button
           type="button"
           key={ index }

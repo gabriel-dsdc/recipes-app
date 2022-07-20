@@ -39,7 +39,7 @@ function Recipes() {
     <>
       { pathName.split('/').length === 2
       && <Header title={ obj.title } />}
-      { pathName === 'Foods' ? <CategoryMeal /> : <CategoryCocktail />}
+      { obj.title === 'Foods' ? <CategoryMeal /> : <CategoryCocktail />}
       {
         renderResults.map((recipe, index) => (
           <RecipeCard

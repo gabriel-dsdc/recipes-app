@@ -16,10 +16,10 @@ function CategoryCocktail() {
     });
   }, []);
 
-  const MAX_CATEGORYS = 5;
+  const MAX_CATEGORY = 5;
   return (
     <div>
-      { cocktail.slice(0, MAX_CATEGORYS).map((cocktails, index) => (
+      { cocktail.slice(0, MAX_CATEGORY).map((cocktails, index) => (
         <button
           type="button"
           key={ index }
