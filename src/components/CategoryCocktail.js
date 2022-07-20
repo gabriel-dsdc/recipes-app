@@ -12,7 +12,6 @@ function CategoryCocktail() {
   useEffect(() => {
     getCocktailApi().then((data) => {
       setCocktail(data.drinks);
-      console.log(data.drinks);
     });
   }, []);
 

@@ -23,13 +23,13 @@ function SearchBar() {
     }
   }
 
+  const handleChange = ({ target: { value } }) => setSearch((prevState) => ({
+    ...prevState,
+    searchType: value,
+  }));
+
   return (
-    <form
-      onChange={ ({ target: { value } }) => setSearch((prevState) => ({
-        ...prevState,
-        searchType: value,
-      })) }
-    >
+    <form>
       <label htmlFor="ingredient-search-radio">
         <input
           data-testid="ingredient-search-radio"
@@ -38,6 +38,7 @@ function SearchBar() {
           value="ingredient"
           type="radio"
           required
+          onChange={ handleChange }
         />
         Ingredient
       </label>
@@ -48,6 +49,7 @@ function SearchBar() {
           name="search"
           value="name"
           type="radio"
+          onChange={ handleChange }
         />
         Name
       </label>
@@ -58,6 +60,7 @@ function SearchBar() {
           name="search"
           value="first-letter"
           type="radio"
+          onChange={ handleChange }
         />
         First Letter
       </label>
