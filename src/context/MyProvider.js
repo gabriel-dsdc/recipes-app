@@ -8,10 +8,20 @@ function Provider({ children }) {
     searchType: '',
     searchResult: [],
   };
-
+  const [cocktail, setCocktail] = useState([]);
+  const [meal, setMeal] = useState([]);
   const [search, setSearch] = useState(INITIAL_SEARCH);
   return (
-    <MyContext.Provider value={ { search, setSearch } }>
+    <MyContext.Provider
+      value={ {
+        search,
+        setSearch,
+        meal,
+        setMeal,
+        cocktail,
+        setCocktail,
+      } }
+    >
       {children}
     </MyContext.Provider>
   );
