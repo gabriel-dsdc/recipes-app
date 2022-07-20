@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import MyContext from './MyContext';
+import { getDefaultResponse } from '../services/api';
+
+const MAX_LENGTH = 12;
 
 function Provider({ children }) {
   const INITIAL_SEARCH = {
@@ -11,6 +14,18 @@ function Provider({ children }) {
   const [cocktail, setCocktail] = useState([]);
   const [meal, setMeal] = useState([]);
   const [search, setSearch] = useState(INITIAL_SEARCH);
+  const [defaultFood, setdefaultFood] = useState([]);
+  const [defaultDrinks, setDefaultDrinks] = useState([]);
+
+  useEffect(() => {
+    async function fetchDefault() {
+      const drinks = await getDefaultResponse('drink');
+      const food = await getDefaultResponse('food');
+      setDefaultDrinks((drinks.slice(0, MAX_LENGTH)));
+      setdefaultFood(food.slice(0, MAX_LENGTH));
+    }
+    fetchDefault();
+  }, []);
   return (
     <MyContext.Provider
       value={ {
@@ -20,6 +35,8 @@ function Provider({ children }) {
         setMeal,
         cocktail,
         setCocktail,
+        defaultFood,
+        defaultDrinks,
       } }
     >
       {children}

@@ -12,7 +12,6 @@ function CategoryMeal() {
   useEffect(() => {
     getMealApi().then((response) => {
       setMeal(response.meals);
-      console.log(response.meals);
     });
   }, []);
 

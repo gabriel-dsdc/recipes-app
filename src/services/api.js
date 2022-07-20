@@ -23,11 +23,25 @@ export async function getRecipes(database, searchType, searchText) {
   return api[Object.keys(api)] || [];
 }
 
-export async function getDefaultRecipes(database) {
-  const url = `https://www.the${database}db.com/api/json/v1/1/search.php?s=`;
-  console.log('chamei a segunda');
+export async function getDefaultResponse(type) {
+  let url;
+  if (type === 'food') {
+    url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+  }
+  if (type === 'drink') {
+    url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+  }
   const api = await fetch(url)
     .then((res) => (res.json()))
     .then((res) => (res));
-  return api[Object.keys(api)] || [];
+  return api[Object.keys(api)];
 }
+
+// export async function getDefaultRecipes(database) {
+//   const url = `https://www.the${database}db.com/api/json/v1/1/search.php?s=`;
+//   console.log('chamei a segunda');
+//   const api = await fetch(url)
+//     .then((res) => (res.json()))
+//     .then((res) => (res));
+//   return api[Object.keys(api)] || [];
+// }
