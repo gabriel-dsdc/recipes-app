@@ -5,6 +5,8 @@ import Footer from '../components/Footer';
 import MyContext from '../context/MyContext';
 import RecipeCard from '../components/RecipeCard';
 import { getDefaultRecipes } from '../services/api';
+import CategoryMeal from '../components/CategoryMeal';
+import CategoryCocktail from '../components/CategoryCocktail';
 
 const MAX_LENGTH = 12;
 
@@ -37,6 +39,7 @@ function Recipes() {
     <>
       { pathName.split('/').length === 2
       && <Header title={ obj.title } />}
+      { obj.title === 'Foods' ? <CategoryMeal /> : <CategoryCocktail />}
       {
         renderResults.map((recipe, index) => (
           <RecipeCard
