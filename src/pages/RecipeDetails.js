@@ -8,7 +8,6 @@ function RecipeDetails() {
   const path = splited[1];
   const id = splited[2];
   const [currentRecipe, setCurrentRecipe] = useState([]);
-  const [objectRecipe, setObjRecipe] = useState([]);
   const type = path === 'foods' ? 'Meal' : 'Drink';
 
   useEffect(() => {
