@@ -29,6 +29,8 @@ function Recipes() {
       {
         obj.toRender.map((recipe, index) => (
           <RecipeCard
+            path={ pathName }
+            id={ recipe[`id${obj.currentAPI}`] }
             key={ recipe[`id${obj.currentAPI}`] }
             index={ index }
             name={ recipe[`str${obj.currentAPI}`] }

@@ -8,21 +8,22 @@ import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import Recipes from './pages/Recipes';
+import RecipeDetails from './pages/RecipeDetails';
 
 function App() {
   return (
     <Provider>
       <Switch>
         <Route exact path="/" component={ Login } />
-        <Route path="/foods" component={ Recipes } />
-        <Route path="/foods/:id" component={ Recipes } />
-        <Route path="/foods/:id/in-progress" component={ Recipes } />
-        <Route path="/drinks" component={ Recipes } />
-        <Route path="/drinks/:id" component={ Recipes } />
-        <Route path="/drinks/:id/in-progress" component={ Recipes } />
-        <Route path="/profile" component={ Profile } />
-        <Route path="/done-recipes" component={ DoneRecipes } />
-        <Route path="/favorite-recipes" component={ FavoriteRecipes } />
+        <Route exact path="/foods" component={ Recipes } />
+        <Route exact path="/foods/:id" component={ RecipeDetails } />
+        <Route exact path="/foods/:id/in-progress" component={ Recipes } />
+        <Route exact path="/drinks" component={ Recipes } />
+        <Route exact path="/drinks/:id" component={ RecipeDetails } />
+        <Route exact path="/drinks/:id/in-progress" component={ Recipes } />
+        <Route exact path="/profile" component={ Profile } />
+        <Route exact path="/done-recipes" component={ DoneRecipes } />
+        <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
       </Switch>
     </Provider>
   );
