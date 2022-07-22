@@ -14,8 +14,24 @@ function RecipeDetails() {
   const [ingList, setIngList] = useState([]);
   const [measureList, setmeasureList] = useState([]);
   const [recommend, setRecommend] = useState([]);
+  const typeRecomendation = (path === 'foods') ? 'Drink' : 'Meal';
   const type = (path === 'foods') ? 'Meal' : 'Drink';
   const { defaultFood, defaultDrinks } = useContext(MyContext);
+  const styles = {
+    mainDiv: {
+      width: '300px',
+      display: 'flex',
+      overflow: 'scroll',
+    },
+    subDivs: {
+      width: '50vw',
+    },
+    subDivsImg: {
+      width: '150px',
+    },
+  };
+
+  console.log(recommend);
 
   useEffect(() => {
     async function getRecipe() {
@@ -34,7 +50,7 @@ function RecipeDetails() {
   }, []);
 
   useEffect(() => {
-    const defaultResults = path.includes('foods') ? defaultFood : defaultDrinks;
+    const defaultResults = path.includes('foods') ? defaultDrinks : defaultFood;
     const renderResults = defaultResults.slice(0, MAX_LENGTH);
     setRecommend(renderResults);
   }, [defaultFood, defaultDrinks, id, path]);
@@ -94,20 +110,40 @@ function RecipeDetails() {
               )
             }
             <h3>Recomendações</h3>
-            {
-              recommend.map((recomendation, index) => (
-                <button
-                  type="button"
-                  key={ index }
-                  data-testid={ `${index}-recomendation-card` }
-                >
-                  <img src={ recomendation[`str${type}Thumb`] } alt="thumb recommend" />
-                  <p data-testid={ `${index}-recomendation-title` }>
-                    { recomendation[`str${type}`] }
-                  </p>
-                </button>
-              ))
-            }
+            <div style={ styles.mainDiv }>
+              {
+                recommend.map((recomendation, index) => (
+                  <button
+                    style={ styles.subDivs }
+                    type="button"
+                    key={ index }
+                    data-testid={ `${index}-recomendation-card` }
+                  >
+                    <img
+                      style={ styles.subDivsImg }
+                      src={ recomendation[`str${typeRecomendation}Thumb`] }
+                      alt="thumb recommend"
+                    />
+                    {/* {
+                      path === 'foods' ? (
+                        <p data-testid={ `${index}-recomendation-title` }>
+                          {' '}
+                          { recomendation.strCategory }
+                        </p>
+                      ) : (
+                        <p data-testid={ `${index}-recomendation-title` }>
+                          {' '}
+                          { recomendation.strAlcoholic }
+                        </p>
+                      )
+                    } */}
+                    <p data-testid={ `${index}-recomendation-title` }>
+                      { recomendation[`str${typeRecomendation}`] }
+                    </p>
+                  </button>
+                ))
+              }
+            </div>
           </div>
         )
       }
