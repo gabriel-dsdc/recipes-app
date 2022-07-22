@@ -7,6 +7,7 @@ const MAX_LENGTH = 6;
 
 function RecipeDetails() {
   const { location: { pathname } } = useHistory();
+  const history = useHistory();
   const splited = pathname.split('/');
   const path = splited[1];
   const id = splited[2];
@@ -38,7 +39,9 @@ function RecipeDetails() {
     },
   };
 
-  console.log(recommend);
+  function handleStartRecipe() {
+    history.push(`${pathname}/in-progress`);
+  }
 
   useEffect(() => {
     async function getRecipe() {
@@ -55,6 +58,16 @@ function RecipeDetails() {
     }
     getRecipe();
   }, []);
+
+  //   [{
+  //     id: id-da-receita,
+  //     type: food-ou-drink,
+  //     nationality: nacionalidade-da-receita-ou-texto-vazio,
+  //     category: categoria-da-receita-ou-texto-vazio,
+  //     alcoholicOrNot: alcoholic-ou-non-alcoholic-ou-texto-vazio,
+  //     name: nome-da-receita,
+  //     image: imagem-da-receita
+  // }]
 
   useEffect(() => {
     const defaultResults = path.includes('foods') ? defaultDrinks : defaultFood;
@@ -161,6 +174,7 @@ function RecipeDetails() {
           style={ styles.divButton }
           type="button"
           data-testid="start-recipe-btn"
+          onClick={ handleStartRecipe }
         >
           Começar receita
         </button>
