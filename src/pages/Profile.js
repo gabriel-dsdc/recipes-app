@@ -13,6 +13,27 @@ function Profile() {
       {
         pathName === '/profile' && <Footer />
       }
+      <h3 data-testid="profile-email">Email</h3>
+      <button
+        type="button"
+        data-testid="profile-done-btn"
+        onClick={ () => history.push('/done-recipes') }
+      >
+        Done Recipes
+      </button>
+      <button
+        type="button"
+        data-testid="profile-favorite-btn"
+        onClick={ () => history.push('/favorite-recipes') }
+      >
+        Favorite Recipes
+      </button>
+      <button
+        type="button"
+        data-testid="profile-logout-btn"
+      >
+        Logout
+      </button>
     </>
   );
 }
