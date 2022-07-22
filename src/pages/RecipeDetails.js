@@ -18,6 +18,13 @@ function RecipeDetails() {
   const type = (path === 'foods') ? 'Meal' : 'Drink';
   const { defaultFood, defaultDrinks } = useContext(MyContext);
   const styles = {
+    divButton: {
+      position: 'fixed',
+      bottom: 0,
+    },
+    firstImg: {
+      width: '200px',
+    },
     mainDiv: {
       width: '300px',
       display: 'flex',
@@ -63,6 +70,7 @@ function RecipeDetails() {
           <div>
             <img
               src={ currentRecipe[0][`str${type}Thumb`] }
+              style={ styles.firstImg }
               data-testid="recipe-photo"
               alt="recipe img"
             />
@@ -144,10 +152,19 @@ function RecipeDetails() {
                 ))
               }
             </div>
+
           </div>
         )
       }
-
+      <div>
+        <button
+          style={ styles.divButton }
+          type="button"
+          data-testid="start-recipe-btn"
+        >
+          Começar receita
+        </button>
+      </div>
     </div>
   );
 }
