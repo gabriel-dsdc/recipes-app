@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import MyContext from '../context/MyContext';
 import { fetchRecipeWithID } from '../services/api';
 
+const copy = require('clipboard-copy');
+
 const MAX_LENGTH = 6;
 
 function RecipeDetails() {
@@ -18,6 +20,7 @@ function RecipeDetails() {
   const typeRecomendation = (path === 'foods') ? 'Drink' : 'Meal';
   const type = (path === 'foods') ? 'Meal' : 'Drink';
   const { defaultFood, defaultDrinks } = useContext(MyContext);
+  const [objRecipe, setObjRecipe] = useState([]);
   const styles = {
     divButton: {
       position: 'fixed',
@@ -47,6 +50,7 @@ function RecipeDetails() {
     async function getRecipe() {
       const recipe = await fetchRecipeWithID(path, id);
       setCurrentRecipe(recipe);
+      setObjRecipe(recipe[0]);
       const ingredientList = Object.entries(recipe[0]).filter((entry) => entry[0]
         .includes('strIngredient'))
         .filter((entry) => entry[1] !== '' && entry[1] !== null);
@@ -75,39 +79,57 @@ function RecipeDetails() {
     setRecommend(renderResults);
   }, [defaultFood, defaultDrinks, id, path]);
 
-  const recipe = currentRecipe[0];
+  const [shareMessage, setShareMessage] = useState('');
+  const TIME_IN_SECONDS = 3000;
+
+  function copyShareLink(link) {
+    copy(link);
+    setShareMessage('Link copied!');
+    setTimeout(() => {
+      setShareMessage('');
+    }, TIME_IN_SECONDS);
+  }
+
   return (
     <div>
       {
-        recipe && (
+        currentRecipe && (
           <div>
-            <img
-              src={ currentRecipe[0][`str${type}Thumb`] }
-              style={ styles.firstImg }
-              data-testid="recipe-photo"
-              alt="recipe img"
-            />
-            <h2 data-testid="recipe-title">
-              {' '}
-              { currentRecipe[0][`str${type}`] }
-              {' '}
-            </h2>
-            <button data-testid="share-btn" type="button">
-              Compartilhar
-            </button>
-            <button data-testid="favorite-btn" type="button">
-              Favoritar
-            </button>
+            <div>
+              <img
+                src={ objRecipe[`str${type}Thumb`] }
+                style={ styles.firstImg }
+                data-testid="recipe-photo"
+                alt="recipe img"
+              />
+              <h2 data-testid="recipe-title">
+                {' '}
+                { objRecipe[`str${type}`] }
+                {' '}
+              </h2>
+              <p>{ shareMessage }</p>
+              <button
+                data-testid="share-btn"
+                type="button"
+                onClick={ () => copyShareLink(objRecipe.strSource) }
+              >
+                Compartilhar
+              </button>
+              <button data-testid="favorite-btn" type="button">
+                Favoritar
+              </button>
+            </div>
+
             {
               path === 'foods' ? (
                 <p data-testid="recipe-category">
                   {' '}
-                  { currentRecipe[0].strCategory }
+                  { objRecipe.strCategory }
                 </p>
               ) : (
                 <p data-testid="recipe-category">
                   {' '}
-                  { currentRecipe[0].strAlcoholic }
+                  { objRecipe.strAlcoholic }
                 </p>
               )
             }
@@ -122,14 +144,14 @@ function RecipeDetails() {
               </p>
             ))}
             <h3>Instruções</h3>
-            <p data-testid="instructions">{ currentRecipe[0].strInstructions}</p>
+            <p data-testid="instructions">{ objRecipe.strInstructions}</p>
             {
               path === 'foods' && (
 
                 <div>
                   <p>Vídeo</p>
                   <iframe
-                    src={ currentRecipe[0].strYoutube }
+                    src={ objRecipe.strYoutube }
                     title="Youtube video play"
                   />
                   <p data-testid="video" />
