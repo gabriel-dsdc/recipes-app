@@ -92,6 +92,12 @@ function RecipeDetails() {
               { currentRecipe[0][`str${type}`] }
               {' '}
             </h2>
+            <button data-testid="share-btn" type="button">
+              Compartilhar
+            </button>
+            <button data-testid="favorite-btn" type="button">
+              Favoritar
+            </button>
             {
               path === 'foods' ? (
                 <p data-testid="recipe-category">
