@@ -104,13 +104,13 @@ function RecipeDetails() {
               )
             }
             <h3>Ingredientes</h3>
-            { state.ingList[0] && state.measureList[0]
-            && state.ingList.map((ing, index) => (
+            { state.ingList.length > 0 && state.ingList.map((ing, index) => (
               <p key={ index } data-testid={ `${index}-ingredient-name-and-measure` }>
                 {ing[1]}
                 :
                 {' '}
-                {state.measureList[index][1]}
+                { state.ingList.length === state.measureList.length
+                  ? state.measureList[index][1] : ''}
               </p>
             ))}
             <h3>Instruções</h3>
