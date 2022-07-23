@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import MyContext from '../context/MyContext';
 import { fetchRecipeWithID } from '../services/api';
+import shareIcon from '../images/shareIcon.svg';
+import mapIngredients from '../services/mapIngredients';
 
 const copy = require('clipboard-copy');
 
@@ -9,18 +11,39 @@ const MAX_LENGTH = 6;
 
 function RecipeDetails() {
   const { location: { pathname } } = useHistory();
+  const { defaultFood, defaultDrinks } = useContext(MyContext);
   const history = useHistory();
+
   const splited = pathname.split('/');
   const path = splited[1];
   const id = splited[2];
+
   const [currentRecipe, setCurrentRecipe] = useState([]);
   const [ingList, setIngList] = useState([]);
   const [measureList, setmeasureList] = useState([]);
   const [recommend, setRecommend] = useState([]);
   const typeRecomendation = (path === 'foods') ? 'Drink' : 'Meal';
   const type = (path === 'foods') ? 'Meal' : 'Drink';
-  const { defaultFood, defaultDrinks } = useContext(MyContext);
   const [objRecipe, setObjRecipe] = useState([]);
+  const [shareMessage, setShareMessage] = useState(false);
+
+  useEffect(() => {
+    async function getRecipe() {
+      const recipe = await fetchRecipeWithID(path, id);
+      setCurrentRecipe(recipe);
+      setObjRecipe(recipe[0]);
+      setIngList(mapIngredients(recipe[0], 'strIngredient'));
+      setmeasureList(mapIngredients(recipe[0], 'strMeasure'));
+    }
+    getRecipe();
+  }, []);
+
+  useEffect(() => {
+    const defaultResults = path.includes('foods') ? defaultDrinks : defaultFood;
+    const renderResults = defaultResults.slice(0, MAX_LENGTH);
+    setRecommend(renderResults);
+  }, [defaultFood, defaultDrinks, id, path]);
+
   const styles = {
     divButton: {
       position: 'fixed',
@@ -43,51 +66,31 @@ function RecipeDetails() {
   };
 
   function handleStartRecipe() {
+    setShareMessage(false);
     history.push(`${pathname}/in-progress`);
   }
 
-  useEffect(() => {
-    async function getRecipe() {
-      const recipe = await fetchRecipeWithID(path, id);
-      setCurrentRecipe(recipe);
-      setObjRecipe(recipe[0]);
-      const ingredientList = Object.entries(recipe[0]).filter((entry) => entry[0]
-        .includes('strIngredient'))
-        .filter((entry) => entry[1] !== '' && entry[1] !== null);
-      setIngList(ingredientList);
-      const measList = Object.entries(recipe[0]).filter((entry) => entry[0]
-        .includes('strMeasure'))
-        .filter((entry) => entry[1] !== null && entry[1] !== ' ');
-      setmeasureList(measList);
+  function favoriteRecipe(recipe) {
+    console.log(type);
+    const favorites = [
+      {
+        id,
+        type: type === 'Meal' ? 'food' : 'drink',
+        nationality: type === 'Meal' ? recipe.strArea : '',
+        category: recipe.strCategory,
+        alcoholicOrNot: type === 'Meal' ? '' : recipe.strAlcoholic,
+        name: recipe[`str${type}`],
+        image: recipe[`str${type}Thumb`],
+      },
+    ];
+    if (!localStorage.getItem('favoriteRecipes')) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify((favorites)));
+    } else {
+      const savedRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+      const array = [...savedRecipes, ...favorites];
+      console.log(array);
+      localStorage.setItem('favoriteRecipes', JSON.stringify((array)));
     }
-    getRecipe();
-  }, []);
-
-  //   [{
-  //     id: id-da-receita,
-  //     type: food-ou-drink,
-  //     nationality: nacionalidade-da-receita-ou-texto-vazio,
-  //     category: categoria-da-receita-ou-texto-vazio,
-  //     alcoholicOrNot: alcoholic-ou-non-alcoholic-ou-texto-vazio,
-  //     name: nome-da-receita,
-  //     image: imagem-da-receita
-  // }]
-
-  useEffect(() => {
-    const defaultResults = path.includes('foods') ? defaultDrinks : defaultFood;
-    const renderResults = defaultResults.slice(0, MAX_LENGTH);
-    setRecommend(renderResults);
-  }, [defaultFood, defaultDrinks, id, path]);
-
-  const [shareMessage, setShareMessage] = useState('');
-  const TIME_IN_SECONDS = 3000;
-
-  function copyShareLink(link) {
-    copy(link);
-    setShareMessage('Link copied!');
-    setTimeout(() => {
-      setShareMessage('');
-    }, TIME_IN_SECONDS);
   }
 
   return (
@@ -107,15 +110,25 @@ function RecipeDetails() {
                 { objRecipe[`str${type}`] }
                 {' '}
               </h2>
-              <p>{ shareMessage }</p>
               <button
                 data-testid="share-btn"
                 type="button"
-                onClick={ () => copyShareLink(objRecipe.strSource) }
+                onClick={ () => { copy(objRecipe.strSource); setShareMessage(true); } }
               >
-                Compartilhar
+                {
+                  shareMessage ? (<p>Link copied!</p>) : (
+                    <img
+                      src={ shareIcon }
+                      alt="shareIcon"
+                    />
+                  )
+                }
               </button>
-              <button data-testid="favorite-btn" type="button">
+              <button
+                data-testid="favorite-btn"
+                type="button"
+                onClick={ () => { favoriteRecipe(objRecipe); } }
+              >
                 Favoritar
               </button>
             </div>
@@ -173,19 +186,6 @@ function RecipeDetails() {
                       src={ recomendation[`str${typeRecomendation}Thumb`] }
                       alt="thumb recommend"
                     />
-                    {/* {
-                      path === 'foods' ? (
-                        <p data-testid={ `${index}-recomendation-title` }>
-                          {' '}
-                          { recomendation.strCategory }
-                        </p>
-                      ) : (
-                        <p data-testid={ `${index}-recomendation-title` }>
-                          {' '}
-                          { recomendation.strAlcoholic }
-                        </p>
-                      )
-                    } */}
                     <p data-testid={ `${index}-recomendation-title` }>
                       { recomendation[`str${typeRecomendation}`] }
                     </p>
