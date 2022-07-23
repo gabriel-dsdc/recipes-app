@@ -2,49 +2,46 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import MyContext from '../context/MyContext';
 import { fetchRecipeWithID } from '../services/api';
+import mapIngredients from '../services/mapIngredients';
+import styles from '../services/styles';
+import ShareAndFavorite from '../components/ShareAndFavorite';
 
 const MAX_LENGTH = 6;
 
 function RecipeDetails() {
   const { location: { pathname } } = useHistory();
+  const { defaultFood, defaultDrinks } = useContext(MyContext);
+  const history = useHistory();
+
   const splited = pathname.split('/');
   const path = splited[1];
   const id = splited[2];
-  const [currentRecipe, setCurrentRecipe] = useState([]);
-  const [ingList, setIngList] = useState([]);
-  const [measureList, setmeasureList] = useState([]);
-  const [recommend, setRecommend] = useState([]);
-  const typeRecomendation = (path === 'foods') ? 'Drink' : 'Meal';
-  const type = (path === 'foods') ? 'Meal' : 'Drink';
-  const { defaultFood, defaultDrinks } = useContext(MyContext);
-  const styles = {
-    mainDiv: {
-      width: '300px',
-      display: 'flex',
-      overflow: 'scroll',
-    },
-    subDivs: {
-      width: '50vw',
-    },
-    subDivsImg: {
-      width: '150px',
-    },
+
+  const DETAILS_RECIPE_STATE = {
+    currentRecipe: [],
+    ingList: [],
+    measureList: [],
+    recommend: [],
+    typeRecomendation: (path === 'foods') ? 'Drink' : 'Meal',
+    type: (path === 'foods') ? 'Meal' : 'Drink',
+    objRecipe: [],
+    shareMessage: false,
   };
 
-  console.log(recommend);
+  const [state, setState] = useState(DETAILS_RECIPE_STATE);
 
   useEffect(() => {
     async function getRecipe() {
       const recipe = await fetchRecipeWithID(path, id);
-      setCurrentRecipe(recipe);
-      const ingredientList = Object.entries(recipe[0]).filter((entry) => entry[0]
-        .includes('strIngredient'))
-        .filter((entry) => entry[1] !== '' && entry[1] !== null);
-      setIngList(ingredientList);
-      const measList = Object.entries(recipe[0]).filter((entry) => entry[0]
-        .includes('strMeasure'))
-        .filter((entry) => entry[1] !== null && entry[1] !== ' ');
-      setmeasureList(measList);
+      const ingredientes = (mapIngredients(recipe[0], 'strIngredient'));
+      const measures = (mapIngredients(recipe[0], 'strMeasure'));
+      setState((prevState) => ({
+        ...prevState,
+        currentRecipe: recipe,
+        objRecipe: recipe[0],
+        ingList: ingredientes,
+        measureList: measures,
+      }));
     }
     getRecipe();
   }, []);
@@ -52,57 +49,79 @@ function RecipeDetails() {
   useEffect(() => {
     const defaultResults = path.includes('foods') ? defaultDrinks : defaultFood;
     const renderResults = defaultResults.slice(0, MAX_LENGTH);
-    setRecommend(renderResults);
+    setState((prevState) => ({
+      ...prevState,
+      recommend: renderResults,
+    }));
   }, [defaultFood, defaultDrinks, id, path]);
 
-  const recipe = currentRecipe[0];
+  function handleStartRecipe() {
+    setState((prevState) => ({
+      ...prevState,
+      shareMessage: false,
+    }));
+    history.push(`${pathname}/in-progress`);
+  }
+
   return (
     <div>
       {
-        recipe && (
+        state.currentRecipe && (
           <div>
-            <img
-              src={ currentRecipe[0][`str${type}Thumb`] }
-              data-testid="recipe-photo"
-              alt="recipe img"
-            />
-            <h2 data-testid="recipe-title">
-              {' '}
-              { currentRecipe[0][`str${type}`] }
-              {' '}
-            </h2>
+            <div>
+              <img
+                src={ state.objRecipe[`str${state.type}Thumb`] }
+                style={ styles.firstImg }
+                data-testid="recipe-photo"
+                alt="recipe img"
+              />
+              <h2 data-testid="recipe-title">
+                {' '}
+                { state.objRecipe[`str${state.type}`] }
+                {' '}
+              </h2>
+              {
+                state.currentRecipe[0]
+                && <ShareAndFavorite
+                  recipe={ state.objRecipe }
+                  shareMessage={ state.shareMessage }
+                  type={ state.type }
+                  id={ id }
+                />
+              }
+            </div>
             {
               path === 'foods' ? (
                 <p data-testid="recipe-category">
                   {' '}
-                  { currentRecipe[0].strCategory }
+                  { state.objRecipe.strCategory }
                 </p>
               ) : (
                 <p data-testid="recipe-category">
                   {' '}
-                  { currentRecipe[0].strAlcoholic }
+                  { state.objRecipe.strAlcoholic }
                 </p>
               )
             }
             <h3>Ingredientes</h3>
-            { ingList[0] && measureList[0]
-            && ingList.map((ing, index) => (
+            { state.ingList.length > 0 && state.ingList.map((ing, index) => (
               <p key={ index } data-testid={ `${index}-ingredient-name-and-measure` }>
                 {ing[1]}
                 :
                 {' '}
-                {measureList[index][1]}
+                { state.ingList.length === state.measureList.length
+                  ? state.measureList[index][1] : ''}
               </p>
             ))}
             <h3>Instruções</h3>
-            <p data-testid="instructions">{ currentRecipe[0].strInstructions}</p>
+            <p data-testid="instructions">{ state.objRecipe.strInstructions}</p>
             {
               path === 'foods' && (
 
                 <div>
                   <p>Vídeo</p>
                   <iframe
-                    src={ currentRecipe[0].strYoutube }
+                    src={ state.objRecipe.strYoutube }
                     title="Youtube video play"
                   />
                   <p data-testid="video" />
@@ -112,7 +131,7 @@ function RecipeDetails() {
             <h3>Recomendações</h3>
             <div style={ styles.mainDiv }>
               {
-                recommend.map((recomendation, index) => (
+                state.recommend.map((recomendation, index) => (
                   <button
                     style={ styles.subDivs }
                     type="button"
@@ -121,33 +140,30 @@ function RecipeDetails() {
                   >
                     <img
                       style={ styles.subDivsImg }
-                      src={ recomendation[`str${typeRecomendation}Thumb`] }
+                      src={ recomendation[`str${state.typeRecomendation}Thumb`] }
                       alt="thumb recommend"
                     />
-                    {/* {
-                      path === 'foods' ? (
-                        <p data-testid={ `${index}-recomendation-title` }>
-                          {' '}
-                          { recomendation.strCategory }
-                        </p>
-                      ) : (
-                        <p data-testid={ `${index}-recomendation-title` }>
-                          {' '}
-                          { recomendation.strAlcoholic }
-                        </p>
-                      )
-                    } */}
                     <p data-testid={ `${index}-recomendation-title` }>
-                      { recomendation[`str${typeRecomendation}`] }
+                      { recomendation[`str${state.typeRecomendation}`] }
                     </p>
                   </button>
                 ))
               }
             </div>
+
           </div>
         )
       }
-
+      <div>
+        <button
+          style={ styles.divButton }
+          type="button"
+          data-testid="start-recipe-btn"
+          onClick={ handleStartRecipe }
+        >
+          Começar receita
+        </button>
+      </div>
     </div>
   );
 }
