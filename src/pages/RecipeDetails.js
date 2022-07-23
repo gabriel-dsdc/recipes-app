@@ -4,6 +4,8 @@ import MyContext from '../context/MyContext';
 import { fetchRecipeWithID } from '../services/api';
 import shareIcon from '../images/shareIcon.svg';
 import mapIngredients from '../services/mapIngredients';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const copy = require('clipboard-copy');
 
@@ -26,6 +28,7 @@ function RecipeDetails() {
   const type = (path === 'foods') ? 'Meal' : 'Drink';
   const [objRecipe, setObjRecipe] = useState([]);
   const [shareMessage, setShareMessage] = useState(false);
+  const [favoriteIcon, setFavoriteIcon] = useState(whiteHeartIcon);
 
   useEffect(() => {
     async function getRecipe() {
@@ -36,6 +39,18 @@ function RecipeDetails() {
       setmeasureList(mapIngredients(recipe[0], 'strMeasure'));
     }
     getRecipe();
+  }, []);
+
+  useEffect(() => {
+    function getFavorites() {
+      if (localStorage.getItem('favoriteRecipes')) {
+        const savedRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+        if (savedRecipes.some((recip) => recip.id === id)) {
+          setFavoriteIcon(blackHeartIcon);
+        }
+      }
+    }
+    getFavorites();
   }, []);
 
   useEffect(() => {
@@ -71,7 +86,7 @@ function RecipeDetails() {
   }
 
   function favoriteRecipe(recipe) {
-    console.log(type);
+    setFavoriteIcon(blackHeartIcon);
     const favorites = [
       {
         id,
@@ -124,13 +139,14 @@ function RecipeDetails() {
                   )
                 }
               </button>
-              <button
-                data-testid="favorite-btn"
-                type="button"
+              <input
+                type="image"
                 onClick={ () => { favoriteRecipe(objRecipe); } }
-              >
-                Favoritar
-              </button>
+                src={ favoriteIcon }
+                data-testid="favorite-btn"
+                alt="favoriteicon"
+              />
+
             </div>
 
             {
