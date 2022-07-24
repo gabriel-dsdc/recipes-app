@@ -48,14 +48,16 @@ function RecipeDetails() {
   }, []);
 
   function handleRecipesInProgress() {
-    const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    const typeOfFood = (path === 'foods') ? 'meals' : 'cocktails';
-    const idsOfRecipes = Object.keys(recipesInProgress[typeOfFood]);
-    if (idsOfRecipes.some((eachId) => eachId === id)) {
-      setState((prevState) => ({
-        ...prevState,
-        inProgress: true,
-      }));
+    if (localStorage.getItem('inProgressRecipes')) {
+      const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      const typeOfFood = (path === 'foods') ? 'meals' : 'cocktails';
+      const idsOfRecipes = Object.keys(recipesInProgress[typeOfFood]);
+      if (idsOfRecipes.some((eachId) => eachId === id)) {
+        setState((prevState) => ({
+          ...prevState,
+          inProgress: true,
+        }));
+      }
     }
   }
 
