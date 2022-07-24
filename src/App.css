@@ -1,3 +1,106 @@
+:root {
+
+  --text-bg-color: #ececec;
+}
+
+.mg-15 {
+  margin: 0 10px;
+}
+
+.recipe-photo {
+  height: 25vh;
+  overflow: hidden;
+}
+
+.recipe-photo > img {
+  position: relative;
+  top: -50%;
+  width: 100%;
+}
+
+.recipe-title {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.recipe-title input {
+  margin: 0 10px;
+}
+
+ol {
+  background-color: var(--text-bg-color);
+  border-radius: 5px;
+  list-style: none;
+  padding: 15px 0 10px 10px;
+}
+
+li > label {
+  display: grid;
+  font-size: 1.2em;
+  gap: 0 0.5em;
+  grid-template-columns: 2em auto;
+}
+
+.instructions {
+  background-color: var(--text-bg-color);
+  border-radius: 5px;
+  height: calc(90vh - (1.75rem + 3em + 30px));
+  margin: 0 10px 80px;
+  overflow: scroll;
+  padding: 5px;
+}
+
+.video-container {
+  height: 0;
+  margin-top: -70px;
+  padding-bottom: 56.25%; /* 16:9 */
+  position: relative;
+}
+
+.video-container iframe {
+  border: none;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.recomendation-container {
+  display: flex;
+  margin-bottom: calc(65px + 10px);
+  overflow: scroll;
+  width: 100vw;
+}
+
+.recomendation-card input {
+  margin: 0 5px;
+  width: calc(50vw - (5px * 2));
+}
+
+.recomendation-card p {
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.recipe-btn {
+  background-color: rgb(108, 227, 79);
+  border: none;
+  border-radius: 15px;
+  bottom: 0;
+  font-size: 2em;
+  font-weight: 500;
+  margin: 10px 5px;
+  padding: 5px 0;
+  position: fixed;
+  width: calc(100% - 10px);
+}
+
+.recipe-btn:disabled {
+  background-color: #c4c4c4;
+}
+
 .meals {
   align-items: center;
   background: #0fa36b;

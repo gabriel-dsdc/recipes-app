@@ -1,6 +1,5 @@
 export async function getRecipes(database, searchType, searchText) {
   let url;
-  console.log('chamei a primeira');
   switch (searchType) {
   case 'ingredient':
     url = `https://www.the${database}db.com/api/json/v1/1/filter.php?i=${searchText}`;
@@ -48,6 +47,5 @@ export async function fetchRecipeWithID(type, id) {
   const api = await fetch(url)
     .then((res) => (res.json()))
     .then((res) => (res));
-  // return api;
   return api[Object.keys(api)];
 }
