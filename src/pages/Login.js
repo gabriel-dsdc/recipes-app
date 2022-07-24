@@ -34,37 +34,49 @@ function Login() {
   }
 
   return (
-    <form>
-      <label htmlFor="email">
-        Email
-        <input
-          data-testid="email-input"
-          type="email"
-          name="email"
-          value={ email }
-          onChange={ handleChange }
-        />
-      </label>
-      <label htmlFor="password">
-        Password
-        <input
-          data-testid="password-input"
-          type="password"
-          name="password"
-          value={ password }
-          onChange={ handleChange }
-        />
-      </label>
-      <button
-        data-testid="login-submit-btn"
-        type="button"
-        disabled={ validateBtn() }
-        onClick={ saveUserEmail }
-      >
-        Enter
-      </button>
-
-    </form>
+    <div className="login-box">
+      <div className="title-cnt">
+        <h1>
+          Recipes App
+        </h1>
+      </div>
+      <div className="form-img-cnt">
+        <div className="img-cnt">
+          <img
+            src="https://i.ibb.co/7b0wBvy/mellow-home-cook.png"
+            alt="Illustration by https://icons8.com/illustrations/author/kP9rc8JiBCcz Irene M. Ray https://icons8.com/illustrations Ouch!"
+          />
+        </div>
+        <div className="form-cnt">
+          <form>
+            <input
+              data-testid="email-input"
+              type="email"
+              placeholder="email@adress.com"
+              name="email"
+              value={ email }
+              onChange={ handleChange }
+            />
+            <input
+              data-testid="password-input"
+              type="password"
+              name="password"
+              placeholder="*******"
+              value={ password }
+              onChange={ handleChange }
+            />
+            <button
+              data-testid="login-submit-btn"
+              type="button"
+              disabled={ validateBtn() }
+              onClick={ saveUserEmail }
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -25,25 +25,44 @@ function RecipeDetails() {
     typeRecomendation: (path === 'foods') ? 'Drink' : 'Meal',
     type: (path === 'foods') ? 'Meal' : 'Drink',
     objRecipe: [],
-    shareMessage: false,
+    inProgress: false,
   };
 
   const [state, setState] = useState(DETAILS_RECIPE_STATE);
 
+  async function getRecipe() {
+    const recipe = await fetchRecipeWithID(path, id);
+    const ingredientes = (mapIngredients(recipe[0], 'strIngredient'));
+    const measures = (mapIngredients(recipe[0], 'strMeasure'));
+    setState((prevState) => ({
+      ...prevState,
+      currentRecipe: recipe,
+      objRecipe: recipe[0],
+      ingList: ingredientes,
+      measureList: measures,
+    }));
+  }
+
   useEffect(() => {
-    async function getRecipe() {
-      const recipe = await fetchRecipeWithID(path, id);
-      const ingredientes = (mapIngredients(recipe[0], 'strIngredient'));
-      const measures = (mapIngredients(recipe[0], 'strMeasure'));
-      setState((prevState) => ({
-        ...prevState,
-        currentRecipe: recipe,
-        objRecipe: recipe[0],
-        ingList: ingredientes,
-        measureList: measures,
-      }));
-    }
     getRecipe();
+  }, []);
+
+  function handleRecipesInProgress() {
+    if (localStorage.getItem('inProgressRecipes')) {
+      const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      const typeOfFood = (path === 'foods') ? 'meals' : 'cocktails';
+      const idsOfRecipes = Object.keys(recipesInProgress[typeOfFood]);
+      if (idsOfRecipes.some((eachId) => eachId === id)) {
+        setState((prevState) => ({
+          ...prevState,
+          inProgress: true,
+        }));
+      }
+    }
+  }
+
+  useEffect(() => {
+    handleRecipesInProgress();
   }, []);
 
   useEffect(() => {
@@ -56,10 +75,6 @@ function RecipeDetails() {
   }, [defaultFood, defaultDrinks, id, path]);
 
   function handleStartRecipe() {
-    setState((prevState) => ({
-      ...prevState,
-      shareMessage: false,
-    }));
     history.push(`${pathname}/in-progress`);
   }
 
@@ -81,9 +96,9 @@ function RecipeDetails() {
             {state.currentRecipe[0]
                 && <ShareAndFavorite
                   recipe={ state.objRecipe }
-                  shareMessage={ state.shareMessage }
                   type={ state.type }
                   id={ id }
+                  pathname={ pathname }
                 />}
           </div>
           {path === 'foods' ? (
@@ -146,7 +161,10 @@ function RecipeDetails() {
           className="recipe-btn"
           onClick={ handleStartRecipe }
         >
-          Começar receita
+          {
+            state.inProgress ? 'Continue Recipe' : 'Start recipe'
+          }
+
         </button>
       </div>
     </>

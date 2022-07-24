@@ -6,11 +6,10 @@ import shareIcon from '../images/shareIcon.svg';
 
 const copy = require('clipboard-copy');
 
-function ShareAndFavorite({ id, shareMessage, recipe, type }) {
+function ShareAndFavorite({ id, recipe, type, pathname }) {
   const INITAL_COMPONENT_STATE = {
-    shareMessage,
+    shareMessage: false,
     recipe,
-    source: recipe.strSource,
     id,
     favoriteIcon: whiteHeartIcon,
   };
@@ -86,7 +85,7 @@ function ShareAndFavorite({ id, shareMessage, recipe, type }) {
           <input
             type="image"
             onClick={ () => {
-              copy(shareFavoriteState.source);
+              copy(`http://localhost:3000${pathname}`);
               setShareFavorite((prevState) => ({
                 ...prevState,
                 shareMessage: true,
@@ -110,10 +109,10 @@ function ShareAndFavorite({ id, shareMessage, recipe, type }) {
 }
 
 ShareAndFavorite.propTypes = {
-  shareMessage: propTypes.bool.isRequired,
   recipe: propTypes.objectOf(propTypes.string).isRequired,
   type: propTypes.string.isRequired,
   id: propTypes.string.isRequired,
+  pathname: propTypes.string.isRequired,
 };
 
 export default ShareAndFavorite;
