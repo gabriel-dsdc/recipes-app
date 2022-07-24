@@ -64,103 +64,92 @@ function RecipeDetails() {
   }
 
   return (
-    <div>
-      {
-        state.currentRecipe && (
-          <div>
-            <div>
-              <img
-                src={ state.objRecipe[`str${state.type}Thumb`] }
-                style={ styles.firstImg }
-                data-testid="recipe-photo"
-                alt="recipe img"
-              />
-              <h2 data-testid="recipe-title">
-                {' '}
-                { state.objRecipe[`str${state.type}`] }
-                {' '}
-              </h2>
-              {
-                state.currentRecipe[0]
+    <>
+      {state.currentRecipe && (
+        <div>
+          <div className="recipe-photo">
+            <img
+              src={ state.objRecipe[`str${state.type}Thumb`] }
+              data-testid="recipe-photo"
+              alt="recipe img"
+            />
+          </div>
+          <div className="recipe-title">
+            <h2 data-testid="recipe-title">
+              { state.objRecipe[`str${state.type}`] }
+            </h2>
+            {state.currentRecipe[0]
                 && <ShareAndFavorite
                   recipe={ state.objRecipe }
                   shareMessage={ state.shareMessage }
                   type={ state.type }
                   id={ id }
-                />
-              }
-            </div>
-            {
-              path === 'foods' ? (
-                <p data-testid="recipe-category">
-                  {' '}
-                  { state.objRecipe.strCategory }
-                </p>
-              ) : (
-                <p data-testid="recipe-category">
-                  {' '}
-                  { state.objRecipe.strAlcoholic }
-                </p>
-              )
-            }
-            <h3>Ingredientes</h3>
-            { state.ingList.length > 0 && state.ingList.map((ing, index) => (
-              <p key={ index } data-testid={ `${index}-ingredient-name-and-measure` }>
-                {`${ing} : ${state.measureList[index] ? state.measureList[index] : ''}`}
-              </p>
-            ))}
-            <h3>Instruções</h3>
-            <p data-testid="instructions">{ state.objRecipe.strInstructions}</p>
-            {
-              path === 'foods' && (
-
-                <div>
-                  <p>Vídeo</p>
-                  <iframe
-                    src={ state.objRecipe.strYoutube }
-                    title="Youtube video play"
-                  />
-                  <p data-testid="video" />
-                </div>
-              )
-            }
-            <h3>Recomendações</h3>
-            <div style={ styles.mainDiv }>
-              {
-                state.recommend.map((recomendation, index) => (
-                  <button
-                    style={ styles.subDivs }
-                    type="button"
-                    key={ index }
-                    data-testid={ `${index}-recomendation-card` }
-                  >
-                    <img
-                      style={ styles.subDivsImg }
-                      src={ recomendation[`str${state.typeRecomendation}Thumb`] }
-                      alt="thumb recommend"
-                    />
-                    <p data-testid={ `${index}-recomendation-title` }>
-                      { recomendation[`str${state.typeRecomendation}`] }
-                    </p>
-                  </button>
-                ))
-              }
-            </div>
-
+                />}
           </div>
-        )
-      }
+          {path === 'foods' ? (
+            <p data-testid="recipe-category">
+              { state.objRecipe.strCategory }
+            </p>
+          ) : (
+            <p data-testid="recipe-category">
+              { state.objRecipe.strAlcoholic }
+            </p>
+          )}
+          <h3>Ingredientes</h3>
+          <ol className="mg-15">
+            { state.ingList.length > 0 && state.ingList.map((ing, index) => (
+              <li key={ index } data-testid={ `${index}-ingredient-name-and-measure` }>
+                {`${ing} : ${state.measureList[index] ? state.measureList[index] : ''}`}
+              </li>
+            ))}
+          </ol>
+          <h3>Instruções</h3>
+          <p
+            data-testid="instructions"
+            className="instructions"
+          >
+            { state.objRecipe.strInstructions}
+          </p>
+          {path === 'foods' && (
+            <div className="video-container">
+              <p>Vídeo</p>
+              <iframe
+                src={ state.objRecipe.strYoutube?.replace('watch?v=', 'embed/') }
+                title="Youtube video play"
+                data-testid="video"
+              />
+            </div>
+          )}
+          <h3>Recomendações</h3>
+          <div className="recomendation-container">
+            {state.recommend.map((recomendation, index) => (
+              <div key={ index } className="recomendation-card">
+                <input
+                  type="image"
+                  data-testid={ `${index}-recomendation-card` }
+                  src={ recomendation[`str${state.typeRecomendation}Thumb`] }
+                  alt="thumb recommend"
+                />
+                <p data-testid={ `${index}-recomendation-title` }>
+                  { recomendation[`str${state.typeRecomendation}`] }
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <div>
         <button
           style={ styles.divButton }
           type="button"
           data-testid="start-recipe-btn"
+          className="recipe-btn"
           onClick={ handleStartRecipe }
         >
           Começar receita
         </button>
       </div>
-    </div>
+    </>
   );
 }
 
