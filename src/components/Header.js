@@ -15,18 +15,26 @@ function Header({ title, hasSearch }) {
   }
 
   return (
-    <>
-      <Link to="/profile">
-        <img
-          src={ profileIcon }
-          data-testid="profile-top-btn"
-          alt="Profile icon"
-        />
-      </Link>
-      <h1 data-testid="page-title">{title}</h1>
-      {
-        hasSearch
+    <div className="header-ctn">
+
+      <div className="profile-cnt">
+        <Link to="/profile">
+          <img
+            src={ profileIcon }
+            data-testid="profile-top-btn"
+            alt="Profile icon"
+          />
+        </Link>
+      </div>
+      <div className="title-ctn">
+        <h1 data-testid="page-title">{title}</h1>
+      </div>
+      <div className="search-ctn">
+        <div className="input-bars-ctn">
+          {
+            hasSearch
         && (
+
           <button type="button" onClick={ openBar }>
             <img
               src={ searchIcon }
@@ -35,9 +43,9 @@ function Header({ title, hasSearch }) {
             />
           </button>
         )
-      }
-      {
-        barVisible
+          }
+          {
+            barVisible
         && <input
           data-testid="search-input"
           type="text"
@@ -46,9 +54,13 @@ function Header({ title, hasSearch }) {
             searchText: value,
           })) }
         />
-      }
-      <SearchBar />
-    </>
+          }
+        </div>
+        <div className="searchbar-ctn">
+          <SearchBar />
+        </div>
+      </div>
+    </div>
   );
 }
 

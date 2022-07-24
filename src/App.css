@@ -8,6 +8,105 @@
 }
 
 /* Login */
+.login-box {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: Yeseva One , cursive;
+  height: 100vh;
+  justify-content: center;
+}
+
+.img-cnt img {
+  border-radius: 5px;
+  width: 80vw;
+}
+
+.title-cnt h1 {
+  color: #3d3c42;
+}
+
+.form-cnt form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3vh;
+  padding: 20px;
+}
+
+.form-cnt input {
+  background-color: white;
+  border-color: white;
+  border-radius: 11px;
+  border-style: solid;
+  border-width: 0;
+  box-shadow: 0 0 2px rgba(66, 66, 66, 0.4);
+  color: black;
+  margin-bottom: 2vh;
+  padding: 4px;
+}
+
+.form-cnt button {
+  background-color: #a6d1e6;
+  border-color: white;
+  border-radius: 11px;
+  border-style: solid;
+  border-width: 0;
+  box-shadow: 0 0 2px rgba(66, 66, 66, 0.4);
+  color: #3d3c42;
+  padding: 4px;
+}
+
+/* Header */
+.header-ctn {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-cnt {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+}
+
+.title-ctn h1 {
+  display: flex;
+  font-family: Yeseva One , cursive;
+  justify-content: center;
+}
+
+.search-ctn {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-ctn button {
+  background-color: #a6d1e6;
+  border-color: white;
+  border-style: solid;
+  border-width: 0;
+  box-shadow: 0 0 2px rgba(66, 66, 66, 0.4);
+  color: #3d3c42;
+}
+
+.searchbar-ctn {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 95vw;
+}
+
+.searchbar-ctn button {
+  margin-left: 5px;
+}
+
+.searchbar-ctn input {
+  margin: 0 2px 0 5px;
+}
+
+.input-bars-ctn {
+  height: 8vh;
+}
 
 /* Recipes */
 
