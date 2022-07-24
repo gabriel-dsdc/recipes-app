@@ -3,10 +3,14 @@ function mapIngredients(object, type) {
     .includes(type));
 
   if (type === 'strIngredient') {
-    return ingredientList.filter((entry) => entry[1] !== '' && entry[1] !== null);
+    const ingr = ingredientList.filter((entry) => entry[1] !== '' && entry[1] !== null);
+    return (ingr.map((item) => item[1]));
   }
+
   if (type === 'strMeasure') {
-    return ingredientList.filter((entry) => entry[1] !== null && entry[1] !== ' ');
+    const measur = ingredientList
+      .filter((entry) => entry[1] !== null && entry[1] !== ' ');
+    return (measur.map((item) => item[1]));
   }
 }
 
