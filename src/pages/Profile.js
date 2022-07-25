@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -21,11 +22,11 @@ function Profile() {
 
   return (
     <>
-      <Header title="Profile" hasSearch={ false } />
-      <p>Profile</p>
       {
         pathName === '/profile' && <Footer />
       }
+      <Header pageTitle="Profile" hasSearch={ false } />
+      <h1>Profile </h1>
       <h3 data-testid="profile-email">{user.email}</h3>
       <button
         type="button"
@@ -51,5 +52,11 @@ function Profile() {
     </>
   );
 }
+
+Profile.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Profile;
