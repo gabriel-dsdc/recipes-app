@@ -16,8 +16,8 @@ function Provider({ children }) {
   const [defaultDrinks, setDefaultDrinks] = useState([]);
   const [cocktail, setCocktail] = useState([]);
   const [meal, setMeal] = useState([]);
-  const [categoryMeal, setCategoryMeal] = useState([]);
-  const [categoryDrink, setCategoryDrink] = useState([]);
+  const [categories, setCategory] = useState([]);
+  const [categoryButton, setCategoryButton] = useState([]);
 
   useEffect(() => {
     async function fetchDefault() {
@@ -39,10 +39,10 @@ function Provider({ children }) {
         setCocktail,
         defaultFood,
         defaultDrinks,
-        categoryMeal,
-        setCategoryMeal,
-        categoryDrink,
-        setCategoryDrink,
+        categories,
+        setCategory,
+        categoryButton,
+        setCategoryButton,
       } }
     >
       {children}
