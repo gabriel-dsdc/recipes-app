@@ -16,6 +16,7 @@ function Header({ title, hasSearch }) {
 
   return (
     <>
+      <header></header>
       <Link to="/profile">
         <img
           src={ profileIcon }
