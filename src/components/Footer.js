@@ -14,7 +14,7 @@ function Footer() {
   };
 
   return (
-    <footer data-testid="footer" style={ styles.footer }>
+    <footer className="footer-ctn" data-testid="footer" style={ styles.footer }>
       <Link to="/foods">
         <button
           type="button"
@@ -28,6 +28,7 @@ function Footer() {
 
         </button>
       </Link>
+      <p>Recipes App</p>
       <Link to="/drinks">
         <button
           type="button"
