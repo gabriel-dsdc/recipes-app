@@ -28,8 +28,12 @@ function DoneRecipes() {
               src={ recip.image }
               alt="card img"
             />
-            <p data-testid={ `${index}-horizontal-top-text` } />
-            {recip.category}
+            <p
+              data-testid={ `${index}-horizontal-top-text` }
+            >
+              { recip.type === 'Meal' ? (`${recip.nationality} -  ${recip.category}`)
+                : (recip.alcoholicOrNot)}
+            </p>
             <p data-testid={ `${index}-horizontal-name` }>
               {recip.name}
               {' '}
