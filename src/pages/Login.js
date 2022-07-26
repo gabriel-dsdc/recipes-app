@@ -9,7 +9,8 @@ function Login() {
   const handleChange = ({ target }) => {
     if (target.name === 'email') {
       setUserEmail(target.value);
-    } else if (target.name === 'password') {
+    }
+    if (target.name === 'password') {
       setUserPassword(target.value);
     }
   };

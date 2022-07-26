@@ -46,16 +46,15 @@ export const done = [
 
 export const progress = {
   cocktails:{
-    17222:[
-      "Grand Marnier",
-      "Grenadine"
+    15997:[
+      "Galliano"
     ]
   },
   "meals":{
-    "52785":[
-      "Cumin seeds",
-      "Ginger",
-      "Turmeric"
+    "52771":[
+      "penne rigate",
+      "olive oil",
+      "garlic"
     ]
   }
 }

@@ -41,11 +41,6 @@ function Header({ title, hasSearch }) {
               data-testid="search-top-btn"
               alt="Search Icon"
             />
-            <img
-              src={ profileIcon }
-              data-testid="profile-top-btn"
-              alt="Profile icon"
-            />
           </button>
         )
           }

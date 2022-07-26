@@ -56,4 +56,27 @@ describe('verifica tela de Progresso', () => {
 		const btnFav = screen.getByTestId(/favorite-btn/i);
 		userEvent.click(btnFav);
 	}, 12000)
+	test('verifica selecionar itens', async () => {
+
+		localStorage.clear();
+		const { history } = renderWithRouter(<App />, "/drinks/17222");
+		const continueRecipe = screen.getByTestId("start-recipe-btn");
+		userEvent.click(continueRecipe);
+		const {pathname} = history.location;
+		expect(pathname).toBe("/drinks/17222/in-progress");
+
+	},6000)
+	test('verifica selecionar itens pag progress', async () => {
+
+		localStorage.clear();
+
+		renderWithRouter(<App />, "/foods/52771/in-progress");
+
+		await screen.findAllByTestId(/recipe-photo/,'',{timeout:3500});
+
+		const btnFav = screen.getByTestId(/favorite-btn/i);
+
+		userEvent.click(btnFav);
+
+	},6000)
 });

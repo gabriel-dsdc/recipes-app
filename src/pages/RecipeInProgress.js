@@ -19,7 +19,6 @@ function RecipeInProgress() {
   const [isDisabled, setIsDisabled] = useState(true);
   const RECIPE_NUMBER = 13;
   const LAST_LETTER = -1;
-
   const checkDisabled = useCallback(() => {
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
       cocktails: {},
@@ -120,13 +119,15 @@ function RecipeInProgress() {
 
   return (
     <>
-      <div className="recipe-photo">
-        <img
-          src={ currentRecipe[`str${type}Thumb`] }
-          data-testid="recipe-photo"
-          alt={ `${currentRecipe[`str${type}`]}` }
-        />
-      </div>
+      {currentRecipe[`str${type}Thumb`] && (
+        <div className="recipe-photo">
+          <img
+            src={ currentRecipe[`str${type}Thumb`] }
+            data-testid="recipe-photo"
+            alt={ `${currentRecipe[`str${type}`]}` }
+          />
+        </div>
+      )}
       <div className="recipe-title">
         <h2 data-testid="recipe-title">{currentRecipe[`str${type}`]}</h2>
         <span>
@@ -170,6 +171,7 @@ function RecipeInProgress() {
               <input
                 type="checkbox"
                 id={ `${index}-ingredient-checkbox` }
+                data-testid={ `${index}-ingredient-checkbox` }
                 value={ recipe[0].slice(RECIPE_NUMBER) }
                 defaultChecked={ isChecked(recipe[0].slice(RECIPE_NUMBER)) || false }
                 onChange={ (e) => handleCheck(e) }

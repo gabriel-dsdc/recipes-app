@@ -89,6 +89,8 @@ function Recipes() {
             index={ index }
             name={ recipe[`str${obj.currentAPI}`] }
             image={ recipe[`str${obj.currentAPI}Thumb`] }
+            path={ pathName.includes('foods') ? 'foods' : 'drinks' }
+            id={ recipe[`id${obj.currentAPI}`] }
           />
         ))
       }
