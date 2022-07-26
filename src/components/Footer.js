@@ -5,7 +5,7 @@ import drinkIcon from '../images/drinkIcon.svg';
 import foodIcon from '../images/mealIcon.svg';
 
 function Footer() {
-  const { search, setSearch } = useContext(MyContext);
+  const { resetSearchResults } = useContext(MyContext);
   const styles = {
     footer: {
       position: 'fixed',
@@ -13,12 +13,6 @@ function Footer() {
     },
   };
 
-  function resetSearchResults() {
-    setSearch({
-      ...search,
-      searchResult: [],
-    });
-  }
   return (
     <footer className="footer-ctn" data-testid="footer" style={ styles.footer }>
       <Link to="/foods">

@@ -79,10 +79,12 @@ function Recipes() {
       <div className="recipes-card-ctn">
         { categoryButton.slice(0, MAX_RECIPES_CATEGORY).map((category, index1) => (
           <RecipeCard
-            key={ category[`id${obj.currentAPI}`] }
-            index={ index1 }
-            name={ category[`str${obj.currentAPI}`] }
-            image={ category[`str${obj.currentAPI}Thumb`] }
+            key={ recipe[`id${obj.currentAPI}`] }
+            index={ index }
+            name={ recipe[`str${obj.currentAPI}`] }
+            image={ recipe[`str${obj.currentAPI}Thumb`] }
+            path={ pathName.includes('foods') ? 'foods' : 'drinks' }
+            id={ recipe[`id${obj.currentAPI}`] }
           />
         ))}
         {
