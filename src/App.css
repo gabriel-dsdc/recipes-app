@@ -78,6 +78,8 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  background-color: #F6FBF4;
+  padding: 20px;
 }
 
 .search-ctn button,
@@ -115,11 +117,12 @@
 .categories-ctn {
   display: flex;
   justify-content: center;
+  background-color: #F6FBF4;
+  flex-wrap: wrap;
 }
 
 .categories-ctn button {
   margin: 0 2px 15px 5px;
-  font-size: 14px;
 }
 
 .recipes-card-ctn {
