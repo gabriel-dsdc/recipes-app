@@ -120,6 +120,8 @@ function RecipeInProgress() {
 
   function addDoneRecipe() {
     const date = new Date().toLocaleString();
+    const tagss = path === 'foods' ? currentRecipe.strTags : '';
+    const splitedd = tagss.split(', ');
     const newDoneRecipe = {
       id,
       type,
@@ -129,7 +131,7 @@ function RecipeInProgress() {
       name: currentRecipe[`str${type}`],
       image: currentRecipe[`str${type}Thumb`],
       doneDate: date,
-      tags: path === 'foods' ? currentRecipe.strTags : '',
+      tags: path === 'foods' ? splitedd : '',
     };
     if (!localStorage.getItem('doneRecipes')) {
       localStorage.setItem('doneRecipes', JSON.stringify([newDoneRecipe]));
