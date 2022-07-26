@@ -9,6 +9,7 @@ function RecipeCard({ index, image, name, id, path }) {
   }
   return (
     <div
+      className="recipe-card"
       role="button"
       tabIndex={ index }
       data-testid={ `${index}-recipe-card` }

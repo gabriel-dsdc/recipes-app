@@ -12,7 +12,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  font-family: Yeseva One , cursive;
+  font-family: Yeseva One, cursive;
   height: 100vh;
   justify-content: center;
 }
@@ -70,7 +70,7 @@
 
 .title-ctn h1 {
   display: flex;
-  font-family: Yeseva One , cursive;
+  font-family: Yeseva One, cursive;
   justify-content: center;
 }
 
@@ -80,7 +80,9 @@
   flex-direction: column;
 }
 
-.search-ctn button {
+.search-ctn button,
+.categories-ctn button,
+.footer-ctn button {
   background-color: #a6d1e6;
   border-color: white;
   border-style: solid;
@@ -110,13 +112,44 @@
 
 /* Recipes */
 
+.categories-ctn {
+  display: flex;
+  justify-content: center;
+}
+
+.categories-ctn button {
+  margin: 0 2px 15px 5px;
+  font-size: 14px;
+}
+
+.recipes-card-ctn {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.recipes-card-ctn img {
+  width: 23vw;
+  border-radius: 50%;
+}
+
+.recipe-card {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.recipe-card p {
+  margin-left: 20px;
+}
+
 /* RecipeDetails & RecipeInProgress */
 .recipe-photo {
   height: 25vh;
   overflow: hidden;
 }
 
-.recipe-photo > img {
+.recipe-photo>img {
   position: relative;
   top: -50%;
   width: 100%;
@@ -139,7 +172,7 @@ ol {
   padding: 15px 0 10px 10px;
 }
 
-li > label {
+li>label {
   display: grid;
   font-size: 1.2em;
   gap: 0 0.5em;
@@ -209,6 +242,28 @@ li > label {
 
 /* Profile */
 
+/* Footer */
+
+.footer-ctn {
+  width: 100vw;
+  background-color: #A6D1E6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-ctn button {
+  background-color: #A6D1E6;
+  padding: 5px;
+  box-shadow: none;
+}
+
+.footer-ctn p {
+  font-family: Yeseva One, cursive;
+  color: black;
+  margin: 0 auto;
+}
+
 /* Trybe */
 .meals {
   align-items: center;
@@ -241,10 +296,10 @@ li > label {
 }
 */
 
-.meals > .logo {
+.meals>.logo {
   animation: shake 1.5s infinite ease;
   color: aliceblue;
-  font-family: Montserrat , sans-serif;
+  font-family: Montserrat, sans-serif;
   font-size: 3em;
   font-weight: 900;
 }

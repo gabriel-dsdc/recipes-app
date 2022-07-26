@@ -55,47 +55,52 @@ function Recipes() {
   const MAX_CATEGORY = 5;
   const MAX_RECIPES_CATEGORY = 12;
   return (
-    <>
+    <div className="recipes-ctn">
       { pathName.split('/').length === 2
 && <Header title={ obj.title } />}
-      <button
-        type="button"
-        data-testid="All-category-filter"
-        onClick={ () => setCategoryButton([]) }
-      >
-        All
-      </button>
-      { categories && categories.slice(0, MAX_CATEGORY).map((categoriesBtn, index) => (
+      <div className="categories-ctn">
         <button
           type="button"
-          key={ index }
-          data-testid={ `${categoriesBtn.strCategory}-category-filter` }
-          onClick={ () => getCategoryApi(categoriesBtn.strCategory) }
+          data-testid="All-category-filter"
+          onClick={ () => setCategoryButton([]) }
         >
-          {categoriesBtn.strCategory}
-        </button>))}
-      { categoryButton.slice(0, MAX_RECIPES_CATEGORY).map((category, index1) => (
-        <RecipeCard
-          key={ category[`id${obj.currentAPI}`] }
-          index={ index1 }
-          name={ category[`str${obj.currentAPI}`] }
-          image={ category[`str${obj.currentAPI}Thumb`] }
-        />
-      ))}
-      {
-        obj.toRender.map((recipe, index) => (
+          All
+        </button>
+        { categories && categories.slice(0, MAX_CATEGORY).map((categoriesBtn, index) => (
+          <button
+            type="button"
+            key={ index }
+            data-testid={ `${categoriesBtn.strCategory}-category-filter` }
+            onClick={ () => getCategoryApi(categoriesBtn.strCategory) }
+          >
+            {categoriesBtn.strCategory}
+          </button>))}
+      </div>
+      <div className="recipes-card-ctn">
+        { categoryButton.slice(0, MAX_RECIPES_CATEGORY).map((category, index1) => (
           <RecipeCard
-            key={ recipe[`id${obj.currentAPI}`] }
-            index={ index }
-            name={ recipe[`str${obj.currentAPI}`] }
-            image={ recipe[`str${obj.currentAPI}Thumb`] }
+            key={ category[`id${obj.currentAPI}`] }
+            index={ index1 }
+            name={ category[`str${obj.currentAPI}`] }
+            image={ category[`str${obj.currentAPI}Thumb`] }
           />
-        ))
-      }
+        ))}
+        {
+          obj.toRender.map((recipe, index) => (
+            <RecipeCard
+              key={ recipe[`id${obj.currentAPI}`] }
+              index={ index }
+              name={ recipe[`str${obj.currentAPI}`] }
+              image={ recipe[`str${obj.currentAPI}Thumb`] }
+            />
+          ))
+        }
+
+      </div>
       {
         pathName.split('/').length === 2 && <Footer />
       }
-    </>);
+    </div>);
 }
 
 export default Recipes;
