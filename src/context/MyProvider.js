@@ -19,6 +19,13 @@ function Provider({ children }) {
   const [categories, setCategory] = useState([]);
   const [categoryButton, setCategoryButton] = useState([]);
 
+  function resetSearchResults() {
+    setSearch({
+      ...search,
+      searchResult: [],
+    });
+  }
+
   useEffect(() => {
     async function fetchDefault() {
       const drinks = await getDefaultResponse('drink');
@@ -43,6 +50,7 @@ function Provider({ children }) {
         setCategory,
         categoryButton,
         setCategoryButton,
+        resetSearchResults,
       } }
     >
       {children}
