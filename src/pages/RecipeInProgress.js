@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -7,6 +7,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 import { fetchRecipeWithID } from '../services/api';
 
 function RecipeInProgress() {
+  const history = useHistory();
   const [currentRecipe, setCurrentRecipe] = useState({});
   const [ingList, setIngList] = useState([]);
   const [measureList, setMeasureList] = useState([['a', 'b'], ['c', 'd']]);
@@ -117,6 +118,31 @@ function RecipeInProgress() {
     setIsFavorite(checkFavorite());
   };
 
+  function addDoneRecipe() {
+    const date = new Date().toLocaleString();
+    const tagss = path === 'foods' ? currentRecipe.strTags : '';
+    const splitedd = tagss.split(', ');
+    const newDoneRecipe = {
+      id,
+      type: (path === 'foods') ? 'food' : 'drink',
+      nationality: path === 'foods' ? currentRecipe.strArea : '',
+      category: currentRecipe.strCategory,
+      alcoholicOrNot: path === 'foods' ? '' : currentRecipe.strAlcoholic,
+      name: currentRecipe[`str${type}`],
+      image: currentRecipe[`str${type}Thumb`],
+      doneDate: date,
+      tags: path === 'foods' ? splitedd : '',
+    };
+    if (!localStorage.getItem('doneRecipes')) {
+      localStorage.setItem('doneRecipes', JSON.stringify([newDoneRecipe]));
+    } else {
+      const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+      localStorage.setItem('doneRecipes',
+        JSON.stringify([...doneRecipes, newDoneRecipe]));
+    }
+    history.push('/done-recipes');
+  }
+
   return (
     <>
       {currentRecipe[`str${type}Thumb`] && (
@@ -189,16 +215,15 @@ function RecipeInProgress() {
       >
         {currentRecipe.strInstructions}
       </p>
-      <Link to="/done-recipes">
-        <button
-          data-testid="finish-recipe-btn"
-          className="recipe-btn"
-          type="button"
-          disabled={ isDisabled }
-        >
-          Finish Recipe
-        </button>
-      </Link>
+      <button
+        data-testid="finish-recipe-btn"
+        className="recipe-btn"
+        type="button"
+        disabled={ isDisabled }
+        onClick={ addDoneRecipe }
+      >
+        Finish Recipe
+      </button>
     </>);
 }
 

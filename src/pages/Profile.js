@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
@@ -7,8 +7,18 @@ import Header from '../components/Header';
 function Profile() {
   const history = useHistory();
   const pathName = history.location.pathname;
+  const [userEmail, setUserEmail] = useState('');
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  useEffect(() => {
+    function getEmail() {
+      if (localStorage.getItem('user')) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const { email } = user;
+        setUserEmail(email);
+      } global.alert('Nenhum email cadastrado');
+    }
+    getEmail();
+  }, []);
 
   const funcLogout = () => {
     localStorage.removeItem('user');
@@ -25,9 +35,9 @@ function Profile() {
       {
         pathName === '/profile' && <Footer />
       }
-      <Header pageTitle="Profile" hasSearch={ false } />
+      <Header title="Profile" hasSearch={ false } />
       <h1>Profile </h1>
-      <h3 data-testid="profile-email">{user.email}</h3>
+      <h3 data-testid="profile-email">{userEmail}</h3>
       <button
         type="button"
         data-testid="profile-done-btn"

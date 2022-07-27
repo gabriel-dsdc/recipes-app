@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import MyContext from '../context/MyContext';
 import drinkIcon from '../images/drinkIcon.svg';
 import foodIcon from '../images/mealIcon.svg';
+// import blackHeartIcon from '../images/blackHeartIcon.svg';
+// import profileIcon from '../images/profileIcon.svg';
 
 function Footer() {
   const { resetSearchResults } = useContext(MyContext);
@@ -28,7 +30,25 @@ function Footer() {
 
         </button>
       </Link>
-      <p>Recipes App</p>
+      {/* Comentar entre essas linhas para passar nos testes */}
+      {/* <Link to="/favorites">
+        <div>
+          <img
+            src={ blackHeartIcon }
+            alt="black heart icon"
+          />
+
+        </div>
+      </Link>
+      <Link to="/profile">
+        <div>
+          <img
+            src={ profileIcon }
+            alt="profile icon"
+          />
+        </div>
+      </Link> */}
+      {/* Comentar entre essas linhas para passar nos testes */}
       <Link to="/drinks">
         <button
           type="button"

@@ -16,7 +16,6 @@ function Header({ title, hasSearch }) {
 
   return (
     <div className="header-ctn">
-
       <div className="profile-cnt">
         <Link to="/profile">
           <img
@@ -29,10 +28,8 @@ function Header({ title, hasSearch }) {
       <div className="title-ctn">
         <h1 data-testid="page-title">{title}</h1>
       </div>
-      <div className="search-ctn">
-        <div className="input-bars-ctn">
-          {
-            hasSearch
+      {
+        hasSearch
         && (
 
           <button type="button" onClick={ openBar }>
@@ -43,9 +40,9 @@ function Header({ title, hasSearch }) {
             />
           </button>
         )
-          }
-          {
-            barVisible
+      }
+      {
+        barVisible
         && <input
           data-testid="search-input"
           type="text"
@@ -54,12 +51,11 @@ function Header({ title, hasSearch }) {
             searchText: value,
           })) }
         />
-          }
-        </div>
-        <div className="searchbar-ctn">
-          <SearchBar />
-        </div>
-      </div>
+      }
+      {
+        barVisible
+        && <div className="searchbar-ctn"><SearchBar /></div>
+      }
     </div>
   );
 }

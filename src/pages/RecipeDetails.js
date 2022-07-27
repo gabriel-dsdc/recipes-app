@@ -26,6 +26,7 @@ function RecipeDetails() {
     type: (path === 'foods') ? 'Meal' : 'Drink',
     objRecipe: [],
     inProgress: false,
+    showStartButton: true,
   };
 
   const [state, setState] = useState(DETAILS_RECIPE_STATE);
@@ -43,8 +44,21 @@ function RecipeDetails() {
     }));
   }
 
+  function doneRecipe() {
+    if (JSON.parse(localStorage.getItem('doneRecipes'))) {
+      const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+      if (doneRecipes.some((rec) => rec.id === id)) {
+        setState((prevState) => ({
+          ...prevState,
+          showStartButton: false,
+        }));
+      }
+    }
+  }
+
   useEffect(() => {
     getRecipe();
+    doneRecipe();
   }, []);
 
   function handleRecipesInProgress() {
@@ -154,18 +168,23 @@ function RecipeDetails() {
         </div>
       )}
       <div>
-        <button
-          style={ styles.divButton }
-          type="button"
-          data-testid="start-recipe-btn"
-          className="recipe-btn"
-          onClick={ handleStartRecipe }
-        >
-          {
-            state.inProgress ? 'Continue Recipe' : 'Start recipe'
-          }
+        {
+          state.showStartButton && (
+            <button
+              style={ styles.divButton }
+              type="button"
+              data-testid="start-recipe-btn"
+              className="recipe-btn"
+              onClick={ handleStartRecipe }
+            >
+              {
+                state.inProgress ? 'Continue Recipe' : 'Start recipe'
+              }
 
-        </button>
+            </button>
+          )
+        }
+
       </div>
     </>
   );
