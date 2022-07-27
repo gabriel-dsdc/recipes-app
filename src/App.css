@@ -245,6 +245,12 @@ li>label {
 
 /* Profile */
 
+/* Done Recipes */
+
+.done-recipes-cnt img {
+  width: 50vw;
+}
+
 /* Footer */
 
 .footer-ctn {

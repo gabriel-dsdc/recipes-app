@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 // import MyContext from '../context/MyContext';
 import shareIcon from '../images/shareIcon.svg';
@@ -37,7 +38,7 @@ function DoneRecipes() {
     }
   }
   return (
-    <>
+    <div className="done-recipes-cnt">
       <Header title="Done Recipes" hasSearch={ false } />
       <p>Done Recipes</p>
       <button
@@ -69,22 +70,26 @@ function DoneRecipes() {
       {
         done.map((recip, index) => (
           <div key={ index }>
-            <img
-              data-testid={ `${index}-horizontal-image` }
-              src={ recip.image }
-              alt="card img"
-            />
+            <Link to={ `/${recip.type}s/${recip.id}` }>
+              <img
+                data-testid={ `${index}-horizontal-image` }
+                src={ recip.image }
+                alt="card img"
+              />
+            </Link>
             <p
               data-testid={ `${index}-horizontal-top-text` }
             >
               { recip.type === 'food' ? (`${recip.nationality} -  ${recip.category}`)
                 : (recip.alcoholicOrNot)}
             </p>
-            <p data-testid={ `${index}-horizontal-name` }>
-              {recip.name}
-              {' '}
+            <Link to={ `/${recip.type}s/${recip.id}` }>
+              <p data-testid={ `${index}-horizontal-name` }>
+                {recip.name}
+                {' '}
 
-            </p>
+              </p>
+            </Link>
             <p data-testid={ `${index}-horizontal-done-date` }>
               {recip.doneDate}
 
@@ -112,7 +117,7 @@ function DoneRecipes() {
         ))
 
       }
-    </>
+    </div>
   );
 }
 
