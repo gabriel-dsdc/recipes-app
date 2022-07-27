@@ -124,7 +124,7 @@ function RecipeInProgress() {
     const splitedd = tagss.split(', ');
     const newDoneRecipe = {
       id,
-      type,
+      type: (path === 'foods') ? 'food' : 'drink',
       nationality: path === 'foods' ? currentRecipe.strArea : '',
       category: currentRecipe.strCategory,
       alcoholicOrNot: path === 'foods' ? '' : currentRecipe.strAlcoholic,
