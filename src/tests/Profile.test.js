@@ -1,13 +1,21 @@
 import React from "react";
 import App from "../App";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import renderWithRouter from "./helpers/testConfig";
+import renderWithRouter from "./helpers/renderWithRouter";
 
 const EMAIL = "andre@example.com";
 const PASSWORD = "123123Aa";
 
 describe("Teste da página Profile.js", () => {
+  test('Verifica se o alerta acontece ao não ter um usuário logado', async () => {
+    localStorage.removeItem('user');
+    global.alert = jest.fn((msg) => msg);
+    renderWithRouter(<App />, "/profile");
+    await waitFor(() => {
+      expect(global.alert).toHaveBeenCalled();
+    });
+  });
 
   test('Verifica se o botão Done Recipes funciona corretamente', () => {
     const { history } = renderWithRouter(<App />);

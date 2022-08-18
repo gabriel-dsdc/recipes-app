@@ -10,7 +10,7 @@ function RecipeInProgress() {
   const history = useHistory();
   const [currentRecipe, setCurrentRecipe] = useState({});
   const [ingList, setIngList] = useState([]);
-  const [measureList, setMeasureList] = useState([['a', 'b'], ['c', 'd']]);
+  const [measureList, setMeasureList] = useState([]);
   const { pathname } = useLocation();
   const splited = pathname.split('/');
   const path = splited[1];
@@ -34,10 +34,13 @@ function RecipeInProgress() {
     const fetchAndSetRecipe = async () => {
       const recipe = await fetchRecipeWithID(path, id);
       setCurrentRecipe(recipe[0]);
-      setIsDisabled(checkDisabled());
     };
     fetchAndSetRecipe();
-  }, [path, id, checkDisabled]);
+
+    return () => {
+      setCurrentRecipe({});
+    };
+  }, [path, id]);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -50,7 +53,20 @@ function RecipeInProgress() {
       setMeasureList(measList);
     };
     getRecipe();
+
+    return () => {
+      setIngList([]);
+      setMeasureList([]);
+    };
   }, [currentRecipe]);
+
+  useEffect(() => {
+    setIsDisabled(checkDisabled());
+
+    return () => {
+      setIsDisabled(true);
+    };
+  }, [checkDisabled]);
 
   const isChecked = (ingredientId) => {
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {

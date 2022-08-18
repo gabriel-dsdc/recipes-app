@@ -12,7 +12,7 @@ function Provider({ children }) {
     searchResult: [],
   };
   const [search, setSearch] = useState(INITIAL_SEARCH);
-  const [defaultFood, setdefaultFood] = useState([]);
+  const [defaultFood, setDefaultFood] = useState([]);
   const [defaultDrinks, setDefaultDrinks] = useState([]);
   const [cocktail, setCocktail] = useState([]);
   const [meal, setMeal] = useState([]);
@@ -20,13 +20,18 @@ function Provider({ children }) {
   const [categoryButton, setCategoryButton] = useState([]);
 
   useEffect(() => {
-    async function fetchDefault() {
+    const fetchDefault = async () => {
       const drinks = await getDefaultResponse('drink');
       const food = await getDefaultResponse('food');
-      setDefaultDrinks((drinks.slice(0, MAX_LENGTH)));
-      setdefaultFood(food.slice(0, MAX_LENGTH));
-    }
+      setDefaultDrinks(drinks.slice(0, MAX_LENGTH));
+      setDefaultFood(food.slice(0, MAX_LENGTH));
+    };
     fetchDefault();
+
+    return () => {
+      setDefaultDrinks([]);
+      setDefaultFood([]);
+    };
   }, []);
   return (
     <MyContext.Provider

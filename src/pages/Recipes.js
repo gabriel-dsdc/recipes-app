@@ -31,24 +31,29 @@ function Recipes() {
   };
   const databaseTeste = pathName.includes('foods') ? 'meal' : 'cocktail';
 
-  async function getCategoryApi(categorySelected) {
+  function getCategoryApi(categorySelected, target) {
     const apiResponseButton = pathName.includes('foods') ? 'meals' : 'drinks';
-    const categoryResponse = await fetch(`https://www.the${databaseTeste}db.com/api/json/v1/1/filter.php?c=${categorySelected}`)
-      .then((response) => response.json());
-    setCategoryButton(categoryResponse[apiResponseButton]);
-    // console.log('categoryButn', categoryResponse);
-    // console.log(categorySelected);
+    if (target.className.includes('ctg--clicked')) {
+      setCategoryButton([]);
+    } else {
+      fetch(`https://www.the${databaseTeste}db.com/api/json/v1/1/filter.php?c=${categorySelected}`)
+        .then((response) => response.json())
+        .then((categoryResponse) => {
+          setCategoryButton(categoryResponse[apiResponseButton]);
+        });
+    }
+    target.classList.toggle('ctg--clicked');
   }
 
   useEffect(() => {
-    async function fetchCategories() {
+    const fetchCategories = () => {
       const apiResponse = pathName.includes('foods') ? 'meals' : 'drinks';
-      const resultCategories = await fetch(`https://www.the${databaseTeste}db.com/api/json/v1/1/list.php?c=list`)
-        .then((response) => response.json());
-      setCategory(resultCategories[apiResponse]);
-      // console.log(resultCategories);
-      // console.log('resultCategories[apiResponse]', resultCategories[apiResponse]);
-    }
+      fetch(`https://www.the${databaseTeste}db.com/api/json/v1/1/list.php?c=list`)
+        .then((response) => response.json())
+        .then((resultCategories) => {
+          setCategory(resultCategories[apiResponse]);
+        });
+    };
     fetchCategories();
   }, [obj.database]);
 
@@ -71,11 +76,10 @@ function Recipes() {
             type="button"
             key={ index }
             data-testid={ `${categoriesBtn.strCategory}-category-filter` }
-            onClick={ () => getCategoryApi(categoriesBtn.strCategory) }
+            onClick={ ({ target }) => getCategoryApi(categoriesBtn.strCategory, target) }
           >
             {categoriesBtn.strCategory}
           </button>))}
-
       </div>
       <div className="recipes-card-ctn">
         { categoryButton.slice(0, MAX_RECIPES_CATEGORY).map((category, index1) => (
@@ -88,19 +92,16 @@ function Recipes() {
             path={ pathName }
           />
         ))}
-
-        {
-          obj.toRender.map((recipe, index) => (
-            <RecipeCard
-              key={ recipe[`id${obj.currentAPI}`] }
-              index={ index }
-              name={ recipe[`str${obj.currentAPI}`] }
-              image={ recipe[`str${obj.currentAPI}Thumb`] }
-              id={ recipe[`id${obj.currentAPI}`] }
-              path={ pathName }
-            />
-          ))
-        }
+        {obj.toRender.map((recipe, index) => (
+          <RecipeCard
+            key={ recipe[`id${obj.currentAPI}`] }
+            index={ index }
+            name={ recipe[`str${obj.currentAPI}`] }
+            image={ recipe[`str${obj.currentAPI}Thumb`] }
+            id={ recipe[`id${obj.currentAPI}`] }
+            path={ pathName }
+          />
+        ))}
       </div>
       {
         pathName.split('/').length === 2 && <Footer />

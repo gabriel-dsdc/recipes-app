@@ -45,8 +45,8 @@ export const done = [
 ];
 
 export const progress = {
-  cocktails:{
-    15997:[
+  "cocktails":{
+    "15997":[
       "Galliano"
     ]
   },

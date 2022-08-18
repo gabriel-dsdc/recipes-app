@@ -15,7 +15,9 @@ function Profile() {
         const user = JSON.parse(localStorage.getItem('user'));
         const { email } = user;
         setUserEmail(email);
-      } global.alert('Nenhum email cadastrado');
+      } else {
+        global.alert('Nenhum email cadastrado');
+      }
     }
     getEmail();
   }, []);
@@ -32,9 +34,6 @@ function Profile() {
 
   return (
     <>
-      {
-        pathName === '/profile' && <Footer />
-      }
       <Header title="Profile" hasSearch={ false } />
       <h1>Profile </h1>
       <h3 data-testid="profile-email">{userEmail}</h3>
@@ -59,6 +58,9 @@ function Profile() {
       >
         Logout
       </button>
+      {
+        pathName === '/profile' && <Footer />
+      }
     </>
   );
 }
