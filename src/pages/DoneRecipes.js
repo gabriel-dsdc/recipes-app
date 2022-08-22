@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-// import MyContext from '../context/MyContext';
 import shareIcon from '../images/shareIcon.svg';
 
 const copy = require('clipboard-copy');
@@ -12,7 +11,8 @@ function DoneRecipes() {
   const [allRecipes, setAllRecipes] = useState([]);
   useEffect(() => {
     function getDoneRecipes() {
-      const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+      const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'))
+       || [];
       setDone(doneRecipes);
       setAllRecipes(doneRecipes);
     }
@@ -20,7 +20,6 @@ function DoneRecipes() {
   }, []);
 
   function copyLink(type, id) {
-    console.log(type);
     const path = type === 'food' ? 'foods' : 'drinks';
     copy(`http://localhost:3000/${path}/${id}`);
     setClicked(true);
@@ -48,7 +47,6 @@ function DoneRecipes() {
         onClick={ filterRecipes }
       >
         All
-
       </button>
       <button
         type="button"
@@ -57,7 +55,6 @@ function DoneRecipes() {
         onClick={ filterRecipes }
       >
         Food
-
       </button>
       <button
         type="button"
@@ -67,56 +64,47 @@ function DoneRecipes() {
       >
         Drinks
       </button>
-      {
-        done.map((recip, index) => (
-          <div key={ index }>
-            <Link to={ `/${recip.type}s/${recip.id}` }>
-              <img
-                data-testid={ `${index}-horizontal-image` }
-                src={ recip.image }
-                alt="card img"
-              />
-            </Link>
-            <p
-              data-testid={ `${index}-horizontal-top-text` }
-            >
-              { recip.type === 'food' ? (`${recip.nationality} -  ${recip.category}`)
-                : (recip.alcoholicOrNot)}
+      {done.map((recipe, index) => (
+        <div key={ index }>
+          <Link to={ `/${recipe.type}s/${recipe.id}` }>
+            <img
+              data-testid={ `${index}-horizontal-image` }
+              src={ recipe.image }
+              alt="card img"
+            />
+          </Link>
+          <p
+            data-testid={ `${index}-horizontal-top-text` }
+          >
+            { recipe.type === 'food' ? (`${recipe.nationality} -  ${recipe.category}`)
+              : (recipe.alcoholicOrNot)}
+          </p>
+          <Link to={ `/${recipe.type}s/${recipe.id}` }>
+            <p data-testid={ `${index}-horizontal-name` }>
+              {recipe.name}
+              {' '}
             </p>
-            <Link to={ `/${recip.type}s/${recip.id}` }>
-              <p data-testid={ `${index}-horizontal-name` }>
-                {recip.name}
-                {' '}
-
-              </p>
-            </Link>
-            <p data-testid={ `${index}-horizontal-done-date` }>
-              {recip.doneDate}
-
+          </Link>
+          <p data-testid={ `${index}-horizontal-done-date` }>
+            {recipe.doneDate}
+          </p>
+          <button
+            onClick={ () => copyLink(recipe.type, recipe.id) }
+            type="button"
+          >
+            { !clicked ? <img
+              alt="share icon"
+              data-testid={ `${index}-horizontal-share-btn` }
+              src={ shareIcon }
+            /> : <p>Link copied!</p> }
+          </button>
+          {recipe.tags !== '' && recipe.tags.map((tag, indextag) => (
+            <p key={ indextag } data-testid={ `${index}-${tag}-horizontal-tag` }>
+              {tag}
             </p>
-            <button
-              onClick={ () => copyLink(recip.type, recip.id) }
-              type="button"
-            >
-              { !clicked ? <img
-                alt="share icon"
-                data-testid={ `${index}-horizontal-share-btn` }
-                src={ shareIcon }
-              />
-                : <p>Link copied!</p> }
-            </button>
-
-            {
-              recip.tags.map((tag, indextag) => (
-                <p key={ indextag } data-testid={ `${index}-${tag}-horizontal-tag` }>
-                  {tag}
-                </p>
-              ))
-            }
-          </div>
-        ))
-
-      }
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

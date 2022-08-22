@@ -31,52 +31,53 @@ function RecipeDetails() {
 
   const [state, setState] = useState(DETAILS_RECIPE_STATE);
 
-  async function getRecipe() {
-    const recipe = await fetchRecipeWithID(path, id);
-    const ingredientes = (mapIngredients(recipe[0], 'strIngredient'));
-    const measures = (mapIngredients(recipe[0], 'strMeasure'));
-    setState((prevState) => ({
-      ...prevState,
-      currentRecipe: recipe,
-      objRecipe: recipe[0],
-      ingList: ingredientes,
-      measureList: measures,
-    }));
-  }
+  useEffect(() => {
+    const getRecipe = async () => {
+      const recipe = await fetchRecipeWithID(path, id);
+      const ingredientes = (mapIngredients(recipe[0], 'strIngredient'));
+      const measures = (mapIngredients(recipe[0], 'strMeasure'));
+      setState((prevState) => ({
+        ...prevState,
+        currentRecipe: recipe,
+        objRecipe: recipe[0],
+        ingList: ingredientes,
+        measureList: measures,
+      }));
+    };
 
-  function doneRecipe() {
-    if (JSON.parse(localStorage.getItem('doneRecipes'))) {
-      const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
-      if (doneRecipes.some((rec) => rec.id === id)) {
-        setState((prevState) => ({
-          ...prevState,
-          showStartButton: false,
-        }));
+    function handleRecipesInProgress() {
+      if (localStorage.getItem('inProgressRecipes')) {
+        const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+        const typeOfFood = (path === 'foods') ? 'meals' : 'cocktails';
+        const idsOfRecipes = Object.keys(recipesInProgress[typeOfFood]);
+        if (idsOfRecipes.some((eachId) => eachId === id)) {
+          setState((prevState) => ({
+            ...prevState,
+            inProgress: true,
+          }));
+        }
       }
     }
-  }
 
-  useEffect(() => {
+    function doneRecipe() {
+      if (localStorage.getItem('doneRecipes')) {
+        const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+        if (doneRecipes.some((rec) => rec.id === id)) {
+          setState((prevState) => ({
+            ...prevState,
+            showStartButton: false,
+          }));
+        }
+      }
+    }
+
     getRecipe();
     doneRecipe();
-  }, []);
-
-  function handleRecipesInProgress() {
-    if (localStorage.getItem('inProgressRecipes')) {
-      const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
-      const typeOfFood = (path === 'foods') ? 'meals' : 'cocktails';
-      const idsOfRecipes = Object.keys(recipesInProgress[typeOfFood]);
-      if (idsOfRecipes.some((eachId) => eachId === id)) {
-        setState((prevState) => ({
-          ...prevState,
-          inProgress: true,
-        }));
-      }
-    }
-  }
-
-  useEffect(() => {
     handleRecipesInProgress();
+
+    return () => {
+      setState(DETAILS_RECIPE_STATE);
+    };
   }, []);
 
   useEffect(() => {
@@ -168,23 +169,17 @@ function RecipeDetails() {
         </div>
       )}
       <div>
-        {
-          state.showStartButton && (
-            <button
-              style={ styles.divButton }
-              type="button"
-              data-testid="start-recipe-btn"
-              className="recipe-btn"
-              onClick={ handleStartRecipe }
-            >
-              {
-                state.inProgress ? 'Continue Recipe' : 'Start recipe'
-              }
-
-            </button>
-          )
-        }
-
+        {state.showStartButton && (
+          <button
+            style={ styles.divButton }
+            type="button"
+            data-testid="start-recipe-btn"
+            className="recipe-btn"
+            onClick={ handleStartRecipe }
+          >
+            { state.inProgress ? 'Continue Recipe' : 'Start recipe' }
+          </button>
+        )}
       </div>
     </>
   );

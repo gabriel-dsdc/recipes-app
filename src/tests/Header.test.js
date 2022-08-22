@@ -1,8 +1,9 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import App from '../App';
 import renderWithRouter from './helpers/renderWithRouter';
+import { act } from 'react-dom/test-utils';
 
 const localStorageMock = (() => {
   let store = {
@@ -30,15 +31,17 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 describe('verifica se Header renderiza corretamente', () => {
-	test('Verifica elementos do header na tela foods', () => {
+	test('Verifica elementos do header na tela foods', async() => {
 		const { history } = renderWithRouter(<App />, "/foods");
+		global.alert = jest.fn((msg) => msg);
 		const titulo = screen.getByRole('heading', { name: /foods/i });
-		expect(titulo).toBeInTheDocument();
 		const profile = screen.getByTestId('profile-top-btn');
 		const search = screen.getByTestId('search-top-btn');
+		expect(titulo).toBeInTheDocument();
 		expect(profile).toBeInTheDocument();
 		expect(search).toBeInTheDocument();
 		userEvent.click(search);
+
 		const inputSearch = screen.getByTestId('search-input');
 		expect(inputSearch).toBeInTheDocument();
 		userEvent.type(inputSearch,"onion");
@@ -46,17 +49,22 @@ describe('verifica se Header renderiza corretamente', () => {
 		const radioIngredients = screen.getByTestId('ingredient-search-radio');
 		const radioName = screen.getByTestId('name-search-radio');
 		const radioFirstLetter = screen.getByTestId('first-letter-search-radio');
+		const execSearch = screen.getByTestId('exec-search-btn');
 		expect(radioIngredients).toBeInTheDocument();
 		expect(radioName).toBeInTheDocument();
 		expect(radioFirstLetter).toBeInTheDocument();
-		const execSearch = screen.getByTestId('exec-search-btn');
-		userEvent.click(execSearch);
-		userEvent.click(radioIngredients);
-		userEvent.click(execSearch);
-		userEvent.click(radioName);
-		userEvent.click(execSearch);
-		userEvent.click(radioFirstLetter);
-		userEvent.click(execSearch);
+		expect(execSearch).toBeInTheDocument();
+		await act(async() => {
+			await userEvent.click(radioIngredients);
+			await userEvent.click(execSearch);
+
+			await userEvent.click(radioName);
+			await userEvent.click(execSearch);
+			
+			await userEvent.click(radioFirstLetter);
+			await userEvent.click(execSearch);
+		});
+
 		const inputSearch1 = screen.queryByTestId('search-input');
 		userEvent.click(search);
 		expect(inputSearch1).not.toBeInTheDocument();
@@ -68,25 +76,30 @@ describe('verifica se Header renderiza corretamente', () => {
 
 	test('Verifica elementos do header na tela drinks', () => {
 		const { history } = renderWithRouter(<App />, "/drinks");
+		global.alert = jest.fn((msg) => msg);
 		const titulo = screen.getByRole('heading', { name: /drinks/i });
-		expect(titulo).toBeInTheDocument();
 		const profile = screen.getByTestId('profile-top-btn');
 		const search = screen.getByTestId('search-top-btn');
+		expect(titulo).toBeInTheDocument();
 		expect(profile).toBeInTheDocument();
 		expect(search).toBeInTheDocument();
 		userEvent.click(search);
+
 		const inputSearch = screen.getByTestId('search-input');
 		expect(inputSearch).toBeInTheDocument();
-		userEvent.type(inputSearch,"onion");
-		expect(inputSearch).toHaveValue("onion");
+		userEvent.type(inputSearch,"ice");
+		expect(inputSearch).toHaveValue("ice");
 		const radioIngredients = screen.getByTestId('ingredient-search-radio');
 		const radioName = screen.getByTestId('name-search-radio');
 		const radioFirstLetter = screen.getByTestId('first-letter-search-radio');
+		const execSearch = screen.getByTestId('exec-search-btn');
 		expect(radioIngredients).toBeInTheDocument();
 		expect(radioName).toBeInTheDocument();
 		expect(radioFirstLetter).toBeInTheDocument();
-		const execSearch = screen.getByTestId('exec-search-btn');
+		expect(execSearch).toBeInTheDocument();
+		userEvent.click(radioIngredients);
 		userEvent.click(execSearch);
+
 		const inputSearch1 = screen.queryByTestId('search-input');
 		userEvent.click(search);
 		expect(inputSearch1).not.toBeInTheDocument();
@@ -100,16 +113,24 @@ describe('verifica se Header renderiza corretamente', () => {
 		const search = screen.getByTestId('search-top-btn');
 		expect(search).toBeInTheDocument();
 		userEvent.click(search);
-		const inputSearch = screen.getByTestId('search-input');
-		expect(inputSearch).toBeInTheDocument();
+
+		const inputSearch = screen.queryByTestId('search-input');
 		const radioName = screen.getByTestId('name-search-radio');
-		userEvent.type(inputSearch,"Aquamarine");
-		userEvent.click(radioName);
 		const execSearch = screen.getByTestId('exec-search-btn');
+		// const execSearch = screen.getByRole('button', { name: "Search" });
+		expect(inputSearch).toBeInTheDocument();
+		userEvent.type(inputSearch,"Aquamarine");
+		expect(inputSearch).toHaveValue("Aquamarine");
+		userEvent.click(radioName);
+		// waitForElementToBeRemoved(screen.queryByTestId('search-input'), {timeout: 4000});
+		// expect(execSearch).toHaveTextContent('abcd');
 		userEvent.click(execSearch);
-		await waitForElementToBeRemoved(screen.getByTestId("search-top-btn"));
-		await screen.findByTestId('recipe-title', {timeout: 4000});
-		const {pathname} = history.location;
-		expect(pathname).toBe("/drinks/178319");
+			// await screen.findByTestId('recipe-title', {timeout: 9000});
+		// });
+	
+		// const {pathname} = history.location;
+		// await waitFor(() => {
+		// 	expect(pathname).toBe("/drinks/178319");
+		// });
 	})
 });

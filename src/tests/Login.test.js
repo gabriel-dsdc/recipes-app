@@ -2,7 +2,7 @@ import React from 'react';
 import App from '../App';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import renderWithRouter from './helpers/testConfig';
+import renderWithRouter from './helpers/renderWithRouter';
 
 const localStorageMock = (() => {
   let store = {};
@@ -29,7 +29,7 @@ Object.defineProperty(window, 'localStorage', {
 
 describe('Testa a tela de login', () => {
   test('Teste inicial', () => {
-    renderWithRouter(<App/>, '/');
+    renderWithRouter(<App/>);
 
     const email = screen.getByTestId("email-input");
     expect(email).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('Testa a tela de login', () => {
   });
 
   test('Verifica se botão começa desabilitado, e é habilitado após dados corretos', () => {
-    renderWithRouter(<App/>, '/');
+    renderWithRouter(<App/>);
 
     const email = screen.getByTestId("email-input");
     const password = screen.getByTestId("password-input");
@@ -57,7 +57,7 @@ describe('Testa a tela de login', () => {
   })
 
   test('Verifica se os dados são salvos', () => {
-    renderWithRouter(<App/>, '/');
+    renderWithRouter(<App/>);
 
     const email = screen.getByTestId("email-input");
     const password = screen.getByTestId("password-input");

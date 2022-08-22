@@ -5,17 +5,11 @@ import App from '../App';
 import renderWithRouter from './helpers/renderWithRouter';
 import {progress, fav} from './mocks/localStorage'
 
-
 import copy from 'clipboard-copy';
-
-
-
 jest.mock("clipboard-copy");
 
 describe('verifica tela de Progresso', () => {
-
 	test('verifica geral de pag progresso', async () => {
-
 		localStorage.clear();
 		localStorage.setItem('inProgressRecipes', JSON.stringify(progress));
 		renderWithRouter(<App />, "/drinks/15997/in-progress");
@@ -32,13 +26,9 @@ describe('verifica tela de Progresso', () => {
 
 		const finalizar = screen.getByTestId("finish-recipe-btn");
 		expect(finalizar).toBeInTheDocument();
-
-
-
 	},10000)
 
 	test('verifica fav click', async () => {
-
 		localStorage.clear();
 		localStorage.setItem('inProgressRecipes', JSON.stringify(progress));
 		localStorage.setItem('favoriteRecipes', JSON.stringify(fav));
@@ -51,7 +41,6 @@ describe('verifica tela de Progresso', () => {
 	},6000)
 
 	test('verifica selecionar itens', async () => {
-
 		localStorage.clear();
 		const { history } = renderWithRouter(<App />, "/drinks/15997/in-progress");
     await screen.findAllByTestId(/recipe-photo/,'',{timeout:3500});
