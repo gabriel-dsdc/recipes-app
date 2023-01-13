@@ -5,7 +5,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
 
 const copy = require('clipboard-copy');
-
+// eslint-disable-next-line
 function ShareAndFavorite({ id, recipe, type, pathname }) {
   const INITAL_COMPONENT_STATE = {
     shareMessage: false,
@@ -15,24 +15,24 @@ function ShareAndFavorite({ id, recipe, type, pathname }) {
   };
   const [shareFavoriteState, setShareFavorite] = useState(INITAL_COMPONENT_STATE);
 
-  function isFavorite() {
-    const savedRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    if (savedRecipes.some((recip) => recip.id === shareFavoriteState.id)) {
-      setShareFavorite((prevState) => ({
-        ...prevState,
-        favoriteIcon: blackHeartIcon,
-      }));
-    }
-  }
-
   useEffect(() => {
+    function isFavorite() {
+      const savedRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+      if (savedRecipes.some((recip) => recip.id === shareFavoriteState.id)) {
+        setShareFavorite((prevState) => ({
+          ...prevState,
+          favoriteIcon: blackHeartIcon,
+        }));
+      }
+    }
+
     function getFavorites() {
       if (localStorage.getItem('favoriteRecipes')) {
         isFavorite();
       }
     }
     getFavorites();
-  }, []);
+  }, [shareFavoriteState.id]);
 
   function toggleFavorites(fav) {
     const savedRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));

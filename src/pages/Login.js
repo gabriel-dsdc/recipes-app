@@ -55,6 +55,7 @@ function Login() {
               type="email"
               placeholder="email@adress.com"
               name="email"
+              autoComplete="email"
               value={ email }
               onChange={ handleChange }
             />
@@ -63,6 +64,7 @@ function Login() {
               type="password"
               name="password"
               placeholder="*******"
+              autoComplete="current-password"
               value={ password }
               onChange={ handleChange }
             />
