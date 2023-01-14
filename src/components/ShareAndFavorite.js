@@ -5,7 +5,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
 
 const copy = require('clipboard-copy');
-// eslint-disable-next-line
+
 function ShareAndFavorite({ id, recipe, type, pathname }) {
   const INITAL_COMPONENT_STATE = {
     shareMessage: false,
